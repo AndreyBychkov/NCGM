@@ -30,3 +30,30 @@ void printMatrix(struct SquareMatrix m) {
         printf("\n");
     }
 }
+
+static int readMatrixSizeFromStdIn() {
+    char sizeStr[5];
+    fgets(sizeStr, sizeof(sizeStr), stdin);
+    char *end;
+    int size = strtol(sizeStr, &end, 10);
+
+    return size;
+}
+
+static void read2DArrayFromStdIn(struct SquareMatrix m) {
+    for (int i = 0; i < m.size; ++i) {
+        for (int j = 0; j < m.size; ++j) {
+            scanf("%lf", &m.matrix[i][j]);
+        }
+    }
+}
+
+struct SquareMatrix readFromStdIn() {
+    int size = readMatrixSizeFromStdIn();
+    struct SquareMatrix m = initMatrix(size);
+    read2DArrayFromStdIn(m);
+
+    return m;
+}
+
+
