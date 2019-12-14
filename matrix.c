@@ -48,7 +48,7 @@ static void read2DArrayFromStdIn(struct SquareMatrix m) {
     }
 }
 
-struct SquareMatrix readFromStdIn() {
+struct SquareMatrix readMatrixFromStdIn() {
     int size = readMatrixSizeFromStdIn();
     struct SquareMatrix m = initMatrix(size);
     read2DArrayFromStdIn(m);

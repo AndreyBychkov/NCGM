@@ -15,6 +15,6 @@ void freeMatrix(struct SquareMatrix m);
 
 void printMatrix(struct SquareMatrix m);
 
-struct SquareMatrix readFromStdIn();
+struct SquareMatrix readMatrixFromStdIn();
 
 #endif //TEST_MATRIX_H
