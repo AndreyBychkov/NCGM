@@ -18,6 +18,36 @@ void testMatrixCreation() {
     }
 }
 
+void testZero() {
+    struct SquareMatrix m = zeroMatrix(3);
+    for (int i = 0; i < m.size; ++i) {
+        for (int j = 0; j < m.size; ++j) {
+            if (fabs(m.matrix[i][j]) > 10e-6) {
+                printf("testZero: FAILED. Contains element non-zero element: %lf. \n", m.matrix[i][j]);
+                return;
+            }
+        }
+    }
+    printf("testZero: PASSED. \n");
+}
+
+void testEye() {
+    struct SquareMatrix m = eyeMatrix(3);
+    for (int i = 0; i < m.size; ++i) {
+        for (int j = 0; j < m.size; ++j) {
+            if (i != j && fabs(m.matrix[i][j]) > 10e-6) {
+                printf("testEye: FAILED. Contains element non-zero element: %lf outside of diagonal. \n", m.matrix[i][j]);
+                return;
+            }
+            if (i == j && fabs(m.matrix[i][j] - 1.0) > 10e-6) {
+                printf("testEye: FAILED. Contains element in diagonal: %lf != 1. \n", m.matrix[i][j]);
+                return;
+            }
+        }
+    }
+    printf("testEye: PASSED. \n");
+}
+
 void testGetColumn() {
     struct SquareMatrix m = initMatrix(3);
 
@@ -80,6 +110,8 @@ void matrixTestSuite() {
     for (int i = 0; i < 40; ++i) putchar('-');
     printf("\nMatrix tests:\n\n");
     testMatrixCreation();
+    testZero();
+    testEye();
     testGetRow();
     testGetColumn();
 }

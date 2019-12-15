@@ -9,6 +9,9 @@
 
 void testMatrixCreation();
 
+void testZero();
+void testEye();
+
 void testGetRow();
 void testGetColumn();
 

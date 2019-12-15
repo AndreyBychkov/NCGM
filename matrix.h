@@ -13,6 +13,8 @@ struct SquareMatrix {
 };
 
 struct SquareMatrix initMatrix(int size);
+struct SquareMatrix zeroMatrix(int size);
+struct SquareMatrix eyeMatrix(int size);
 void freeMatrix(struct SquareMatrix m);
 
 void printMatrix(struct SquareMatrix m);

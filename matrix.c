@@ -82,5 +82,23 @@ struct Vector dotProduct(struct SquareMatrix m, struct Vector v) {
     return result;
 }
 
+struct SquareMatrix zeroMatrix(int size) {
+    struct SquareMatrix m = initMatrix(size);
+    for (int i = 0; i < size; ++i) {
+        for (int j = 0; j < size; ++j) {
+            m.matrix[i][j] = 0.0;
+        }
+    }
+    return m;
+}
+
+struct SquareMatrix eyeMatrix(int size) {
+    struct SquareMatrix m = zeroMatrix(size);
+    for (int i = 0; i < size; ++i) {
+        m.matrix[i][i] = 1.0;
+    }
+    return m;
+}
+
 
 
