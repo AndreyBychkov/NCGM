@@ -56,4 +56,21 @@ struct SquareMatrix readMatrixFromStdIn() {
     return m;
 }
 
+struct Vector getColumn(struct SquareMatrix m, int index) {
+    struct Vector v = initVector(m.size);
+    for (int i = 0; i < m.size; ++i) {
+        v.vector[i] = m.matrix[i][index];
+    }
+    return v;
+}
+
+struct Vector getRow(struct SquareMatrix m, int index) {
+    struct Vector v = initVector(m.size);
+    for (int i = 0; i < m.size; ++i) {
+        v.vector[i] = m.matrix[index][i];
+    }
+    return v;
+}
+
+
 
