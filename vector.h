@@ -14,11 +14,16 @@ struct Vector {
 };
 
 struct Vector initVector(int size);
+struct Vector zeroVector(int size);
+struct Vector onesVector(int size);
 void freeVector(struct Vector v);
 
 void printVector(struct Vector v);
 
 struct Vector readVectorFromStdIn();
+
+struct Vector minus(struct Vector);
+void minusInplace(struct Vector);
 
 double scalarComposition(struct Vector v1, struct Vector v2);
 

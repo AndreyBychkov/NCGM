@@ -12,6 +12,22 @@ struct Vector initVector(int size) {
     return v;
 }
 
+struct Vector zeroVector(int size) {
+    struct Vector v = initVector(size);
+    for (int i = 0; i < size; ++i) {
+        v.vector[i] = 0.0;
+    }
+    return v;
+}
+
+struct Vector onesVector(int size) {
+    struct Vector v = initVector(size);
+    for (int i = 0; i < size; ++i) {
+        v.vector[i] = 1.0;
+    }
+    return v;
+}
+
 void freeVector(struct Vector v) {
     free(v.vector);
 }
@@ -53,3 +69,7 @@ double scalarComposition(struct Vector v1, struct Vector v2) {
     }
     return result;
 }
+
+
+
+
