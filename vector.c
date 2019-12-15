@@ -45,3 +45,11 @@ struct Vector readVectorFromStdIn() {
 
     return v;
 }
+
+double scalarComposition(struct Vector v1, struct Vector v2) {
+    double result = 0;
+    for (int i = 0; i < v1.size; ++i) {
+        result += v1.vector[i] * v2.vector[i];
+    }
+    return result;
+}
