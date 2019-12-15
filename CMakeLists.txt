@@ -3,4 +3,5 @@ project(Test C)
 
 set(CMAKE_C_STANDARD 11)
 
-add_executable(Test main.c matrix.c optimization.c optimization.h vector.c vector.h)
+add_executable(Main main.c matrix.c optimization.c optimization.h vector.c vector.h)
+add_executable(Tests tests/testmain.c tests/vector_tests.c vector.c)
