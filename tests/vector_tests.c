@@ -43,6 +43,8 @@ void testScalarComposition() {
 }
 
 void vectorTestSuite() {
+    for (int i = 0; i < 40; ++i) putchar('-');
+    printf("\nVector tests:\n\n");
     testVectorCreation();
     testScalarComposition();
 }

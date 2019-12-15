@@ -77,6 +77,8 @@ void testGetRow() {
 }
 
 void matrixTestSuite() {
+    for (int i = 0; i < 40; ++i) putchar('-');
+    printf("\nMatrix tests:\n\n");
     testMatrixCreation();
     testGetRow();
     testGetColumn();
