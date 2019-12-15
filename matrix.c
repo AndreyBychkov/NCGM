@@ -72,5 +72,15 @@ struct Vector getRow(struct SquareMatrix m, int index) {
     return v;
 }
 
+struct Vector dotProduct(struct SquareMatrix m, struct Vector v) {
+    struct Vector result = initVector(v.size);
+
+    for (int i = 0; i < v.size; ++i) {
+        result.vector[i] = scalarComposition(getRow(m, i), v);
+    }
+
+    return result;
+}
+
 
 

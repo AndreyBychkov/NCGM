@@ -22,4 +22,6 @@ struct SquareMatrix readMatrixFromStdIn();
 struct Vector getColumn(struct SquareMatrix m,int index);
 struct Vector getRow(struct SquareMatrix m, int index);
 
+struct Vector dotProduct(struct SquareMatrix m, struct Vector v);
+
 #endif //TEST_MATRIX_H
