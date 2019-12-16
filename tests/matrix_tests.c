@@ -2,9 +2,9 @@
 // Created by а on 15.12.2019.
 //
 
-#include "matrix_tests.h"
 #include "../matrix.h"
 #include <math.h>
+#include "matrix_tests.h"
 
 void testMatrixCreation() {
     struct SquareMatrix m = initMatrix(5);
@@ -106,6 +106,35 @@ void testGetRow() {
     printf("testGetRow: PASSED.");
 }
 
+void testDotProduct() {
+    struct Vector v = initVector(3);
+    v.vector[0] = 1;
+    v.vector[1] = 2;
+    v.vector[2] = 3;
+
+    struct SquareMatrix m = initMatrix(3);
+    for (int i = 0; i < m.size; ++i) {
+        for (int j = 0; j < m.size; ++j) {
+            m.matrix[i][j] = i + j;
+        }
+    }
+
+    struct Vector result = dotProduct(m, v);
+    struct Vector expected = initVector(3);
+    expected.vector[0] = 8;
+    expected.vector[1] = 14;
+    expected.vector[2] = 20;
+
+    for (int i = 0; i < result.size; ++i) {
+        if (fabs(expected.vector[i] - result.vector[i]) > 1e-6) {
+            printf("testDotProduct: FAILED. At index %d result %lf != expected %lf",
+                    i, result.vector[i], expected.vector[i]);
+            return;
+        }
+    }
+    printf("testDotProduct: PASSED");
+}
+
 void matrixTestSuite() {
     for (int i = 0; i < 40; ++i) putchar('-');
     printf("\nMatrix tests:\n\n");
@@ -114,4 +143,8 @@ void matrixTestSuite() {
     testEye();
     testGetRow();
     testGetColumn();
+    testDotProduct();
+
 }
+
+

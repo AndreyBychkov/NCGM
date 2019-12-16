@@ -15,6 +15,8 @@ void testEye();
 void testGetRow();
 void testGetColumn();
 
+void testDotProduct();
+
 void matrixTestSuite();
 
 #endif //TEST_MATRIX_TESTS_H
