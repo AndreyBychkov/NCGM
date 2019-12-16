@@ -22,8 +22,19 @@ void printVector(struct Vector v);
 
 struct Vector readVectorFromStdIn();
 
-struct Vector minus(struct Vector);
-void minusInplace(struct Vector);
+struct Vector minus(struct Vector v;
+void minusMutable(struct Vector v);
+
+struct Vector addVector(struct Vector first, struct Vector second);
+struct Vector subtractVector(struct Vector first, struct Vector second);
+struct Vector multiplyVectorOnNumber(struct Vector v, double factor);
+struct Vector divideVectorOnNumber(struct Vector v, double divisor);
+
+void addVectorMutable(struct Vector changing, struct Vector another);
+void subtractVectorMutable(struct Vector changing, struct Vector another);
+void multiplyVectorOnNumberMutable(struct Vector changing, double factor);
+void divideVectorOnNumberMutable(struct Vector changing, double divisor);
+
 
 double scalarComposition(struct Vector v1, struct Vector v2);
 

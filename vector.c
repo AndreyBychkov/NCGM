@@ -70,6 +70,76 @@ double scalarComposition(struct Vector v1, struct Vector v2) {
     return result;
 }
 
+struct Vector addVector(struct Vector first, struct Vector second) {
+    struct Vector result = initVector(first.size);
+    for (int i = 0; i < first.size; ++i) {
+        result.vector[i] = first.vector[i] + second.vector[i];
+    }
+    return result;
+}
+
+struct Vector subtractVector(struct Vector first, struct Vector second) {
+    struct Vector result = initVector(first.size);
+    for (int i = 0; i < first.size; ++i) {
+        result.vector[i] = first.vector[i] - second.vector[i];
+    }
+    return result;
+}
+
+struct Vector multiplyVectorOnNumber(struct Vector v, double factor) {
+    struct Vector result = initVector(v.size);
+    for (int i = 0; i < v.size; ++i) {
+        result.vector[i] = v.vector[i] * factor;
+    }
+    return result;
+}
+
+struct Vector divideVectorOnNumber(struct Vector v, double divisor) {
+    struct Vector result = initVector(v.size);
+    for (int i = 0; i < v.size; ++i) {
+        result.vector[i] = v.vector[i] / divisor;
+    }
+    return result;
+}
+
+struct Vector minus(struct Vector v) {
+    struct Vector result = initVector(v.size);
+    for (int i = 0; i < v.size; ++i) {
+        result.vector[i] = -v.vector[i];
+    }
+    return result;
+}
+
+void minusMutable(struct Vector v) {
+    for (int i = 0; i < v.size; ++i) {
+        v.vector[i] = -v.vector[i];
+    }
+}
+
+void addVectorMutable(struct Vector changing, struct Vector another) {
+    for (int i = 0; i < changing.size; ++i) {
+        changing.vector[i] += another.vector[i];
+    }
+}
+
+void subtractVectorMutable(struct Vector changing, struct Vector another) {
+    for (int i = 0; i < changing.size; ++i) {
+        changing.vector[i] -= another.vector[i];
+    }
+}
+
+void multiplyVectorOnNumberMutable(struct Vector changing, double factor) {
+    for (int i = 0; i < changing.size; ++i) {
+        changing.vector[i] *= factor;
+    }
+}
+
+void divideVectorOnNumberMutable(struct Vector changing, double divisor) {
+    for (int i = 0; i < changing.size; ++i) {
+        changing.vector[i] /= divisor;
+    }
+}
+
 
 
 
