@@ -157,6 +157,12 @@ double meanAbsoluteErrorVector(struct Vector first, struct Vector second) {
     return result;
 }
 
+void copyToVector(struct Vector from, struct Vector to) {
+    for (int i = 0; i < from.size; ++i) {
+        to.vector[i] = from.vector[i];
+    }
+}
+
 
 
 

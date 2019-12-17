@@ -1,9 +1,9 @@
 //
 // Created by а on 14.12.2019.
 //
+#include "matrix.h"
 #include <stdio.h>
 #include <stdlib.h>
-#include "matrix.h"
 
 struct SquareMatrix initMatrix(int size) {
     struct SquareMatrix m;
@@ -64,6 +64,14 @@ struct SquareMatrix copyMatrix(struct SquareMatrix m) {
         }
     }
     return result;
+}
+
+void copyToMatrix(struct SquareMatrix from, struct SquareMatrix to) {
+    for (int i = 0; i < from.size; ++i) {
+        for (int j = 0; j < from.size; ++j) {
+            to.matrix[i][j] = from.matrix[i][j];
+        }
+    }
 }
 
 struct Vector getColumn(struct SquareMatrix m, int index) {

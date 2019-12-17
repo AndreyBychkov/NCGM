@@ -22,6 +22,7 @@ void printMatrix(struct SquareMatrix m);
 struct SquareMatrix readMatrixFromStdIn();
 
 struct SquareMatrix copyMatrix(struct SquareMatrix m);
+void copyToMatrix(struct SquareMatrix from, struct SquareMatrix to);
 
 struct Vector getColumn(struct SquareMatrix m,int index);
 struct Vector getRow(struct SquareMatrix m, int index);
