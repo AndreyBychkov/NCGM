@@ -22,7 +22,7 @@ void printVector(struct Vector v);
 
 struct Vector readVectorFromStdIn();
 
-struct Vector minus(struct Vector v;
+struct Vector minus(struct Vector v);
 void minusMutable(struct Vector v);
 
 struct Vector addVector(struct Vector first, struct Vector second);
