@@ -140,6 +140,14 @@ void divideVectorOnNumberMutable(struct Vector changing, double divisor) {
     }
 }
 
+struct Vector copyVector(struct Vector v) {
+    struct Vector result = initVector(v.size);
+    for (int i = 0; i < v.size; ++i) {
+        result.vector[i] = v.vector[i];
+    }
+    return result;
+}
+
 
 
 

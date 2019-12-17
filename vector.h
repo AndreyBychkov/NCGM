@@ -22,6 +22,8 @@ void printVector(struct Vector v);
 
 struct Vector readVectorFromStdIn();
 
+struct Vector copyVector(struct Vector v);
+
 struct Vector minus(struct Vector v);
 void minusMutable(struct Vector v);
 

@@ -56,6 +56,16 @@ struct SquareMatrix readMatrixFromStdIn() {
     return m;
 }
 
+struct SquareMatrix copyMatrix(struct SquareMatrix m) {
+    struct SquareMatrix result = initMatrix(m.size);
+    for (int i = 0; i < m.size; ++i) {
+        for (int j = 0; j < m.size; ++j) {
+            result.matrix[i][j] = m.matrix[i][j];
+        }
+    }
+    return result;
+}
+
 struct Vector getColumn(struct SquareMatrix m, int index) {
     struct Vector v = initVector(m.size);
     for (int i = 0; i < m.size; ++i) {
