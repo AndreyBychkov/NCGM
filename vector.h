@@ -37,6 +37,8 @@ void subtractVectorMutable(struct Vector changing, struct Vector another);
 void multiplyVectorOnNumberMutable(struct Vector changing, double factor);
 void divideVectorOnNumberMutable(struct Vector changing, double divisor);
 
+double meanAbsoluteErrorVector(struct Vector first, struct Vector second);
+
 
 double scalarComposition(struct Vector v1, struct Vector v2);
 

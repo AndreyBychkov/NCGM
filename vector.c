@@ -3,6 +3,7 @@
 //
 
 #include "vector.h"
+#include <math.h>
 
 struct Vector initVector(int size) {
     struct Vector v;
@@ -144,6 +145,14 @@ struct Vector copyVector(struct Vector v) {
     struct Vector result = initVector(v.size);
     for (int i = 0; i < v.size; ++i) {
         result.vector[i] = v.vector[i];
+    }
+    return result;
+}
+
+double meanAbsoluteErrorVector(struct Vector first, struct Vector second) {
+    double result = 0;
+    for (int i = 0; i < first.size; ++i) {
+        result += fabs(first.vector[i] - second.vector[i]);
     }
     return result;
 }
