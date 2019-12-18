@@ -47,15 +47,15 @@ struct Vector optimizeFletcherReeves(struct SquareMatrix hessian,
         freeVector(previousMinusGrad);
         freeVector(basisVector);
 
-        if (iterationCounter % 10 == 0) {
-            printf("\rCurrent iteration: %d. X MAE: %.7lf. Gradient MAE: %.7lf",
-                   iterationCounter, xDifference, gradDifference);
-            fflush(stdout);
-        }
+//        if (iterationCounter % 10 == 0) {
+//            printf("\rCurrent iteration: %d. X MAE: %.7lf. Gradient MAE: %.7lf",
+//                   iterationCounter, xDifference, gradDifference);
+//            fflush(stdout);
+//        }
         ++iterationCounter;
     }
 
-    printf("\nIterations passed: %d. \n", iterationCounter);
+//    printf("\nIterations passed: %d. \n", iterationCounter);
 
 //    freeVector(previousX); TODO(Probably bug with memory here)
     return x;
