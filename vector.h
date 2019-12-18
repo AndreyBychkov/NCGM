@@ -40,6 +40,7 @@ void divideVectorOnNumberMutable(struct Vector changing, double divisor);
 
 double meanAbsoluteErrorVector(struct Vector first, struct Vector second);
 
+struct Vector randomVector(int size);
 
 double scalarComposition(struct Vector v1, struct Vector v2);
 

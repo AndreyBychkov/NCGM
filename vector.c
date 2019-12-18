@@ -163,6 +163,14 @@ void copyToVector(struct Vector from, struct Vector to) {
     }
 }
 
+struct Vector randomVector(int size) {
+    struct Vector v = initVector(size);
+    for (int i = 0; i < size; ++i) {
+        v.vector[i] = rand() % 10;
+    }
+    return v;
+}
+
 
 
 

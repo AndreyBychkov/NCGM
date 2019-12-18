@@ -29,4 +29,6 @@ struct Vector getRow(struct SquareMatrix m, int index);
 
 struct Vector dotProduct(struct SquareMatrix m, struct Vector v);
 
+struct SquareMatrix randomMatrix(int size);
+
 #endif //TEST_MATRIX_H

@@ -118,5 +118,15 @@ struct SquareMatrix eyeMatrix(int size) {
     return m;
 }
 
+struct SquareMatrix randomMatrix(int size) {
+    struct SquareMatrix m = initMatrix(size);
+    for (int i = 0; i < size; ++i) {
+        for (int j = 0; j < size; ++j) {
+            m.matrix[i][j] = rand() % 10;
+        }
+    }
+    return m;
+}
+
 
 
