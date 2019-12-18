@@ -7,6 +7,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 
 struct Vector {
     int size;
@@ -27,6 +28,8 @@ void copyToVector(struct Vector from, struct Vector to);
 
 struct Vector minus(struct Vector v);
 void minusMutable(struct Vector v);
+
+bool equalsVector(struct Vector first, struct Vector second);
 
 struct Vector addVector(struct Vector first, struct Vector second);
 struct Vector subtractVector(struct Vector first, struct Vector second);

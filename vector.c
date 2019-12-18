@@ -4,6 +4,7 @@
 
 #include "vector.h"
 #include <math.h>
+#include <stdbool.h>
 
 struct Vector initVector(int size) {
     struct Vector v;
@@ -169,6 +170,15 @@ struct Vector randomVector(int size) {
         v.vector[i] = rand() % 10;
     }
     return v;
+}
+
+bool equalsVector(struct Vector first, struct Vector second) {
+    for (int i = 0; i < first.size; ++i) {
+        if (fabs(first.vector[i] - second.vector[i]) > 1e-6) {
+            return false;
+        }
+    }
+    return true;
 }
 
 
