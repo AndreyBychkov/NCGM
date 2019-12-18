@@ -1,6 +1,6 @@
 # NCGM: Nonlinear conjugate gradient method.
 
-Package for solving systems of equations like $Hx = b$.
+Package for solving systems of equations like **Hx = b**.
 
 # API
 
