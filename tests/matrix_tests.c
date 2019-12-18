@@ -69,12 +69,12 @@ void testGetColumn() {
     double epsilon = 10e-6;
     for (int i = 0; i < expected.size; ++i) {
         if (fabs(expected.vector[i] - result.vector[i]) < epsilon) {
-            printf("testGetColumn: FAILED. At index %d result %lf != expected %lf",
+            printf("testGetColumn: FAILED. At index %d result %lf != expected %lf \n",
                    i, result.vector[i], expected.vector[i]);
             return;
         }
     }
-    printf("testGetColumn: PASSED.");
+    printf("testGetColumn: PASSED. \n");
 }
 
 void testGetRow() {
@@ -98,12 +98,12 @@ void testGetRow() {
     double epsilon = 10e-6;
     for (int i = 0; i < expected.size; ++i) {
         if (fabs(expected.vector[i] - result.vector[i]) < epsilon) {
-            printf("testGetRow: FAILED. At index %d result %lf != expected %lf",
+            printf("testGetRow: FAILED. At index %d result %lf != expected %lf \n",
                    i, result.vector[i], expected.vector[i]);
             return;
         }
     }
-    printf("testGetRow: PASSED.");
+    printf("testGetRow: PASSED. \n");
 }
 
 void testDotProduct() {
@@ -127,12 +127,12 @@ void testDotProduct() {
 
     for (int i = 0; i < result.size; ++i) {
         if (fabs(expected.vector[i] - result.vector[i]) > 1e-6) {
-            printf("testDotProduct: FAILED. At index %d result %lf != expected %lf",
+            printf("testDotProduct: FAILED. At index %d result %lf != expected %lf \n",
                     i, result.vector[i], expected.vector[i]);
             return;
         }
     }
-    printf("testDotProduct: PASSED");
+    printf("testDotProduct: PASSED \n");
 }
 
 void matrixTestSuite() {
