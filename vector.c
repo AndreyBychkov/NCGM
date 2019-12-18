@@ -39,6 +39,7 @@ void printVector(struct Vector v) {
         printf("%lf ", v.vector[i]);
     }
     printf("\n");
+    fflush(stdout);
 }
 
 static int readVectorSizeFromStdIn() {
