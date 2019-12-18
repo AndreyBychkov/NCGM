@@ -1,5 +1,7 @@
 # NCGM: Nonlinear conjugate gradient method.
 
+[![Build Status](https://travis-ci.com/AndreyBychkov/NCGM.svg?branch=master)](https://travis-ci.com/AndreyBychkov/NCGM)
+
 Package for solving systems of equations like **Hx = b**.
 
 # API

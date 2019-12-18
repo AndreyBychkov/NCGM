@@ -10,7 +10,6 @@ compiler:
   - clang
 os:
   - linux
-  - osx
   - windows
 branches:
   only:
