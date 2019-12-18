@@ -6,6 +6,7 @@
 #include "matrix.h"
 #include "vector.h"
 #include <float.h>
+#include <math.h>
 
 
 struct Vector optimizeFletcherReeves(struct SquareMatrix hessian,
@@ -13,24 +14,24 @@ struct Vector optimizeFletcherReeves(struct SquareMatrix hessian,
                                      struct Vector (*minusGradient)(struct Vector, struct SquareMatrix,
                                                                     struct Vector)) {
 
-    double minGradDifference = 1e-6;
+    double minGradDifference = 1e-7;
     double gradDifference = DBL_MAX;
 
-    double minXDifference = 1e-4;
+    double minXDifference = 1e-7;
     double xDifference = DBL_MAX;
 
-    struct Vector x = initVector(rightEqVector.size);
+    struct Vector x = zeroVector(rightEqVector.size);
     struct Vector previousX = zeroVector(x.size);
     struct Vector previousMinusGrad = minusGradient(previousX, hessian, rightEqVector);
     struct Vector previousBasisVector = copyVector(previousMinusGrad);
 
-    int iterationCounter = 1;
-    while (gradDifference > minGradDifference || xDifference > minXDifference) {
+    int iterationCounter = 0;
+    while (xDifference > minXDifference && (gradDifference > minGradDifference || iterationCounter > 0)) {
         struct Vector minusGrad = minusGradient(previousX, hessian, rightEqVector);
         double beta = scalarComposition(minusGrad, minusGrad) / scalarComposition(previousMinusGrad, previousMinusGrad);
         struct Vector basisVector = addVector(minusGrad, multiplyVectorOnNumber(previousBasisVector, beta));
         double alpha = scalarComposition(minusGrad, basisVector) /
-                       (scalarComposition(basisVector, dotProduct(hessian, basisVector)));
+                       scalarComposition(dotProduct(hessian, basisVector), basisVector);
 
         struct Vector xNew = addVector(previousX, multiplyVectorOnNumber(basisVector, alpha));
         copyToVector(xNew, x);
@@ -46,15 +47,16 @@ struct Vector optimizeFletcherReeves(struct SquareMatrix hessian,
         freeVector(previousMinusGrad);
         freeVector(basisVector);
 
-        if (iterationCounter % 100 == 0) {
-            printf("\rCurrent iteration: %d. X MAE: %.2lf. Gradient MAE: %.2lf",
+        if (iterationCounter % 10 == 0) {
+            printf("\rCurrent iteration: %d. X MAE: %.7lf. Gradient MAE: %.7lf",
                    iterationCounter, xDifference, gradDifference);
             fflush(stdout);
         }
         ++iterationCounter;
     }
-    printf("\n");
 
-    freeVector(previousX);
+    printf("\nIterations passed: %d. \n", iterationCounter);
+
+//    freeVector(previousX); TODO(Probably bug with memory here)
     return x;
 }
