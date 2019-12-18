@@ -20,6 +20,7 @@ void freeMatrix(struct SquareMatrix m);
 void printMatrix(struct SquareMatrix m);
 
 struct SquareMatrix readMatrixFromStdIn();
+struct SquareMatrix readMatrixFromStdInSized(int size);
 
 struct SquareMatrix copyMatrix(struct SquareMatrix m);
 void copyToMatrix(struct SquareMatrix from, struct SquareMatrix to);

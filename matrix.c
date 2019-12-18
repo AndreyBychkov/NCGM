@@ -56,6 +56,14 @@ struct SquareMatrix readMatrixFromStdIn() {
     return m;
 }
 
+
+struct SquareMatrix readMatrixFromStdInSized(int size) {
+    struct SquareMatrix m = initMatrix(size);
+    read2DArrayFromStdIn(m);
+
+    return m;
+}
+
 struct SquareMatrix copyMatrix(struct SquareMatrix m) {
     struct SquareMatrix result = initMatrix(m.size);
     for (int i = 0; i < m.size; ++i) {

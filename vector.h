@@ -22,6 +22,7 @@ void freeVector(struct Vector v);
 void printVector(struct Vector v);
 
 struct Vector readVectorFromStdIn();
+struct Vector readVectorFromStdInSized(int size);
 
 struct Vector copyVector(struct Vector v);
 void copyToVector(struct Vector from, struct Vector to);

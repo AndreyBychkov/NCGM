@@ -13,14 +13,11 @@ struct Vector minusGrad(struct Vector x, struct SquareMatrix hessian, struct Vec
 }
 
 int main() {
+    int size = 0;
+    scanf("%d", &size);
+    struct SquareMatrix hessian = readMatrixFromStdInSized(size);
 
-    struct SquareMatrix hessian = readMatrixFromStdIn();
-    printMatrix(hessian);
-    printf("\n");
-
-    struct Vector b  = readVectorFromStdIn();
-    printVector(b);
-    printf("\n");
+    struct Vector b  = readVectorFromStdInSized(size);
 
     struct Vector xPredicted  = optimizeFletcherReeves(hessian, b, minusGrad);
     printVector(xPredicted);

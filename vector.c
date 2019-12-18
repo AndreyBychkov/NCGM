@@ -182,6 +182,13 @@ bool equalsVector(struct Vector first, struct Vector second) {
     return true;
 }
 
+struct Vector readVectorFromStdInSized(int size) {
+    struct Vector v = initVector(size);
+    read1DArrayFromStdIn(v);
+
+    return v;
+}
+
 
 
 
