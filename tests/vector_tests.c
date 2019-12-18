@@ -11,11 +11,9 @@ void testVectorCreation() {
 
     if (v.vector == NULL) {
         printf("testVectorCreation: FAILED. Memory is not allocated. \n");
-    }
-    else if (v.size != 5) {
+    } else if (v.size != 5) {
         printf("testVectorCreation: FAILED. Size is incorrect. \n");
-    }
-    else {
+    } else {
         printf("testVectorCreation: PASSED. \n");
     }
 
@@ -36,9 +34,52 @@ void testScalarComposition() {
     double epsilon = 1e-6;
     if (fabs(result - 20.0) < epsilon) {
         printf("testScalarComposition: PASSED. \n");
-    }
-    else {
+    } else {
         printf("testScalarComposition: FAILED. Incorrect result: 20 != %lf. \n", result);
+    }
+}
+
+
+void testAddVector() {
+    struct Vector first = zeroVector(3);
+    struct Vector second = onesVector(3);
+
+    struct Vector result = addVector(first, second);
+    struct Vector expected = onesVector(3);
+
+    if (equalsVector(result, expected)) {
+        printf("testAddVector: PASSED. \n");
+    } else {
+        printf("testAddVector: FAILED. \n");
+    }
+}
+
+void testSubtractVector() {
+    struct Vector first = zeroVector(3);
+    struct Vector second = onesVector(3);
+
+    struct Vector result = subtractVector(first, second);
+    struct Vector expected = onesVector(3);
+    minusMutable(expected);
+
+    if (equalsVector(result, expected)) {
+        printf("testSubtractVector: PASSED. \n");
+    } else {
+        printf("testSubtractVector: FAILED. \n");
+    }
+}
+
+void testMAE() {
+    struct Vector first = zeroVector(3);
+    struct Vector second = initVector(3);
+    second.vector[0] = 1;
+    second.vector[1] = 2;
+    second.vector[2] = 3;
+
+    if (fabs(meanAbsoluteErrorVector(first, second) - 6.0) < 1e-6) {
+        printf("testMAE: PASSED. \n");
+    } else {
+        printf("testMAE: FAILED. \n");
     }
 }
 
@@ -47,5 +88,13 @@ void vectorTestSuite() {
     printf("\nVector tests:\n\n");
     testVectorCreation();
     testScalarComposition();
+    testAddVector();
+    testSubtractVector();
+    testMAE();
 }
+
+
+
+
+
 

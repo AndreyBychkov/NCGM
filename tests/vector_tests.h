@@ -8,7 +8,15 @@
 #include "../vector.h"
 
 void testVectorCreation();
+
 void testScalarComposition();
+
+void testAddVector();
+
+void testSubtractVector();
+
+void testMAE();
+
 
 void vectorTestSuite();
 
