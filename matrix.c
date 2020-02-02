@@ -4,6 +4,7 @@
 #include "matrix.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <omp.h>
 
 struct SquareMatrix initMatrix(int size) {
     struct SquareMatrix m;
@@ -103,6 +104,20 @@ struct Vector dotProduct(struct SquareMatrix m, struct Vector v) {
 
     for (int i = 0; i < v.size; ++i) {
         result.vector[i] = scalarComposition(getRow(m, i), v);
+    }
+
+    return result;
+}
+
+struct Vector dotProductParallel(struct SquareMatrix m, struct Vector v) {
+    struct Vector result = initVector(v.size);
+
+    #pragma omp parallel num_threads(12)
+    {
+        #pragma omp for
+        for (int i = 0; i < v.size; ++i) {
+            result.vector[i] = scalarComposition(getRow(m, i), v);
+        }
     }
 
     return result;

@@ -4,6 +4,7 @@
 #include "vector.h"
 #include "optimization.h"
 #include "omp.h"
+#include <time.h>
 
 struct Vector minusGrad(struct Vector x, struct SquareMatrix hessian, struct Vector rightEqVector) {
     return multiplyVectorOnNumber(
@@ -29,33 +30,29 @@ void execute_ncgm() {
 }
 
 int main() {
-    int vsize = 100;
-    struct Vector v1 = initVector(vsize);
-    struct Vector v2 = initVector(vsize);
-    struct Vector v3 = initVector(vsize);
-    struct Vector v3_true = initVector(vsize);
+    int vsize = 10000;
+    struct SquareMatrix A = eyeMatrix(vsize);
+    struct Vector v = onesVector(vsize);
+    struct Vector res;
+    clock_t start, finish;
 
-    for (int i = 0; i < vsize; ++i) {
-        v1.vector[i] = i;
-        v2.vector[i] = i * i;
-        v3_true.vector[i] = i + i*i;
-    }
+    start = clock();
+    res = dotProductParallel(A, v);
+    finish = clock();
+    float parallel_time = (float) (finish - start) / CLOCKS_PER_SEC;
+    printf("Parallel ime: %f\n", parallel_time);
 
-    #pragma omp parallel
-    {
+    start = clock();
+    res = dotProduct(A, v);
+    finish = clock();
+    float seq_time = (float) (finish - start) / CLOCKS_PER_SEC;
+    printf("Sequental time: %f\n", seq_time);
 
-    #pragma omp for
-        for (int i = 0; i < vsize; ++i) {
-            v3.vector[i] = v1.vector[i] + v2.vector[i];
-        }
-    }
+    printf("Time coef: %f", seq_time / parallel_time);
 
-    printVector(v3);
-    printf("%lf", meanAbsoluteErrorVector(v3, v3_true));
+    freeVector(res);
+    freeVector(v);
+    freeMatrix(A);
 
-    freeVector(v1);
-    freeVector(v2);
-    freeVector(v3);
-    freeVector(v3_true);
     return 0;
 }

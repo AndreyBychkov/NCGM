@@ -29,6 +29,7 @@ struct Vector getColumn(struct SquareMatrix m,int index);
 struct Vector getRow(struct SquareMatrix m, int index);
 
 struct Vector dotProduct(struct SquareMatrix m, struct Vector v);
+struct Vector dotProductParallel(struct SquareMatrix m, struct Vector v);
 
 struct SquareMatrix randomMatrix(int size);
 
