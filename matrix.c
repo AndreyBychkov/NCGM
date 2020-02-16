@@ -102,7 +102,9 @@ struct Vector dotProduct(struct SquareMatrix m, struct Vector v) {
     struct Vector result = initVector(v.size);
 
     for (int i = 0; i < v.size; ++i) {
-        result.vector[i] = scalarComposition(getRow(m, i), v);
+        struct Vector row = getRow(m, i);
+        result.vector[i] = scalarComposition(row, v);
+        freeVector(row);
     }
 
     return result;
