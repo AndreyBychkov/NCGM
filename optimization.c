@@ -21,7 +21,12 @@ struct Vector optimizeFletcherReeves(struct SquareMatrix hessian,
     double xDifference = DBL_MAX;
 
     struct Vector x = zeroVector(rightEqVector.size);
+    struct Vector xNew = initVector(x.size);
+    struct Vector basisVector = initVector(x.size);
+    struct Vector hessianBasisVector = initVector(x.size);
+    struct Vector basisVectorAlpha = initVector(x.size);
     struct Vector previousX = zeroVector(x.size);
+    struct Vector prevBasisVectorBeta = initVector(x.size);
     struct Vector previousMinusGrad = minusGradient(previousX, hessian, rightEqVector);
     struct Vector previousBasisVector = copyVector(previousMinusGrad);
 
@@ -30,15 +35,15 @@ struct Vector optimizeFletcherReeves(struct SquareMatrix hessian,
         struct Vector minusGrad = minusGradient(previousX, hessian, rightEqVector);
         double beta = scalarComposition(minusGrad, minusGrad) / scalarComposition(previousMinusGrad, previousMinusGrad);
 
-        struct Vector prevBasisVectorBeta = multiplyVectorOnNumber(previousBasisVector, beta);
-        struct Vector basisVector = addVector(minusGrad, prevBasisVectorBeta);
+        multiplyVectorOnNumberBuffered(previousBasisVector, beta, prevBasisVectorBeta.vector);
+        addVectorBuffered(minusGrad, prevBasisVectorBeta, basisVector.vector);
 
-        struct Vector hessianBasisVector = dotProduct(hessian, basisVector);
+        dotProductBuffered(hessian, basisVector, hessianBasisVector.vector);
         double alpha = scalarComposition(minusGrad, basisVector) /
                        scalarComposition(hessianBasisVector, basisVector);
 
-        struct Vector basisVectorAlpha = multiplyVectorOnNumber(basisVector, alpha);
-        struct Vector xNew = addVector(previousX, basisVectorAlpha);
+        multiplyVectorOnNumberBuffered(basisVector, alpha, basisVectorAlpha.vector);
+        addVectorBuffered(previousX, basisVectorAlpha, xNew.vector);
         copyToVector(xNew, x);
 
 
@@ -49,25 +54,26 @@ struct Vector optimizeFletcherReeves(struct SquareMatrix hessian,
         copyToVector(minusGrad, previousMinusGrad);
         copyToVector(basisVector, previousBasisVector);
 
-        freeVector(xNew);
+
         freeVector(minusGrad);
-        freeVector(prevBasisVectorBeta);
-        freeVector(basisVectorAlpha);
-        freeVector(hessianBasisVector);
-        freeVector(basisVector);
+
 
 //        if (iterationCounter % 10 == 0) {
 //            printf("\rCurrent iteration: %d. X MAE: %.7lf. Gradient MAE: %.7lf",
 //                   iterationCounter, xDifference, gradDifference);
 //            fflush(stdout);
 //        }
-//        ++iterationCounter;
+        ++iterationCounter;
     }
 
 //    printf("\nIterations passed: %d. \n", iterationCounter);
-
+    freeVector(xNew);
     freeVector(previousX);
     freeVector(previousMinusGrad);
     freeVector(previousBasisVector);
+    freeVector(prevBasisVectorBeta);
+    freeVector(basisVectorAlpha);
+    freeVector(hessianBasisVector);
+    freeVector(basisVector);
     return x;
 }
