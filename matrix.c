@@ -12,6 +12,34 @@ struct SquareMatrix initMatrix(size_t size) {
     return m;
 }
 
+struct SquareMatrix zeroMatrix(size_t size) {
+    struct SquareMatrix m = initMatrix(size);
+    for (size_t i = 0; i < size; ++i) {
+        for (size_t j = 0; j < size; ++j) {
+            m.matrix[m.size * i + j] = 0.0;
+        }
+    }
+    return m;
+}
+
+struct SquareMatrix eyeMatrix(size_t size) {
+    struct SquareMatrix m = zeroMatrix(size);
+    for (size_t i = 0; i < size; ++i) {
+        m.matrix[m.size * i + i] = 1.0;
+    }
+    return m;
+}
+
+struct SquareMatrix randomMatrix(size_t size) {
+    struct SquareMatrix m = initMatrix(size);
+    for (size_t i = 0; i < size; ++i) {
+        for (size_t j = 0; j < size; ++j) {
+            m.matrix[m.size * i + j] = rand() % 10;
+        }
+    }
+    return m;
+}
+
 void freeMatrix(struct SquareMatrix m) {
     free(m.matrix);
 }
@@ -55,7 +83,6 @@ struct SquareMatrix readMatrixFromStdIn() {
     return m;
 }
 
-
 struct SquareMatrix readMatrixFromStdInSized(size_t size) {
     struct SquareMatrix m = initMatrix(size);
     read2DArrayFromStdIn(m);
@@ -97,44 +124,37 @@ struct Vector getRow(struct SquareMatrix m, size_t index) {
     return v;
 }
 
+void getColumnBuffered(struct SquareMatrix m, size_t index, double *buffer) {
+    for (size_t i = 0; i < m.size; ++i) {
+        buffer[i] = m.matrix[m.size * i + index];
+    }
+}
+
+void getRowBuffered(struct SquareMatrix m, size_t index, double *buffer) {
+    for (size_t j = 0; j < m.size; ++j) {
+        buffer[j] = m.matrix[m.size * index + j];
+    }
+}
+
 struct Vector dotProduct(struct SquareMatrix m, struct Vector v) {
     struct Vector result = initVector(v.size);
+    struct Vector bufferVector = initVector(v.size);
 
     for (size_t i = 0; i < v.size; ++i) {
-        struct Vector row = getRow(m, i);
-        result.vector[i] = scalarComposition(row, v);
-        freeVector(row);
+        getRowBuffered(m, i, bufferVector.vector);
+        result.vector[i] = scalarComposition(bufferVector, v);
     }
 
     return result;
 }
 
-struct SquareMatrix zeroMatrix(size_t size) {
-    struct SquareMatrix m = initMatrix(size);
-    for (size_t i = 0; i < size; ++i) {
-        for (size_t j = 0; j < size; ++j) {
-            m.matrix[m.size * i + j] = 0.0;
-        }
-    }
-    return m;
-}
+void dotProductBuffered(struct SquareMatrix m, struct Vector v, double *buffer) {
+    struct Vector bufferVector = initVector(v.size);
 
-struct SquareMatrix eyeMatrix(size_t size) {
-    struct SquareMatrix m = zeroMatrix(size);
-    for (size_t i = 0; i < size; ++i) {
-        m.matrix[m.size * i + i] = 1.0;
+    for (size_t i = 0; i < v.size; ++i) {
+        getRowBuffered(m, i, bufferVector.vector);
+        buffer[i] = scalarComposition(bufferVector, v);
     }
-    return m;
-}
-
-struct SquareMatrix randomMatrix(size_t size) {
-    struct SquareMatrix m = initMatrix(size);
-    for (size_t i = 0; i < size; ++i) {
-        for (size_t j = 0; j < size; ++j) {
-            m.matrix[m.size * i + j] = rand() % 10;
-        }
-    }
-    return m;
 }
 
 

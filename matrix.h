@@ -29,7 +29,10 @@ void copyToMatrix(struct SquareMatrix from, struct SquareMatrix to);
 
 struct Vector getColumn(struct SquareMatrix m, size_t index);
 struct Vector getRow(struct SquareMatrix m, size_t index);
+void getColumnBuffered(struct SquareMatrix m, size_t index, double *buffer);
+void getRowBuffered(struct SquareMatrix m, size_t index, double *buffer);
 
 struct Vector dotProduct(struct SquareMatrix m, struct Vector v);
+void dotProductBuffered(struct SquareMatrix m, struct Vector v, double *buffer);
 
 #endif //TEST_MATRIX_H
