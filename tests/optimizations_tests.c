@@ -17,11 +17,11 @@ struct Vector minusGrad(struct Vector x, struct SquareMatrix hessian, struct Vec
 
 void testFletcherReevesDefault() {
     struct SquareMatrix hessian = zeroMatrix(3);
-    hessian.matrix[0][0] = 3;
-    hessian.matrix[1][0] = 4;
-    hessian.matrix[0][1] = 4;
-    hessian.matrix[1][1] = -3;
-    hessian.matrix[2][2] = 5;
+    hessian.matrix[hessian.size * 0 + 0] = 3;
+    hessian.matrix[hessian.size * 1 + 0] = 4;
+    hessian.matrix[hessian.size * 0 + 1] = 4;
+    hessian.matrix[hessian.size * 1 + 1] = -3;
+    hessian.matrix[hessian.size * 2 + 2] = 5;
 
     struct Vector b = initVector(3);
     b.vector[0] = 1;
@@ -50,7 +50,7 @@ void testFletcherReevesDefault() {
 }
 
 void optimizationTestSuite() {
-    for (int i = 0; i < 40; ++i) putchar('-');
+    for (size_t i = 0; i < 40; ++i) putchar('-');
     printf("\nOptimization tests:\n\n");
     testFletcherReevesDefault();
 }

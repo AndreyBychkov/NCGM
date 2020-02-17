@@ -5,51 +5,50 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-struct SquareMatrix initMatrix(int size) {
+struct SquareMatrix initMatrix(size_t size) {
     struct SquareMatrix m;
     m.size = size;
-    m.matrix = malloc(size * sizeof(*m.matrix));
-    for (int i = 0; i != size; ++i) {
-        m.matrix[i] = malloc(size * sizeof(*m.matrix[i]));
-    }
+    m.matrix = malloc(size * size * sizeof(double));
     return m;
 }
 
 void freeMatrix(struct SquareMatrix m) {
-    for (int i = 0; i < m.size; ++i) {
-        free(m.matrix[i]);
-    }
     free(m.matrix);
 }
 
 void printMatrix(struct SquareMatrix m) {
-    for (int i = 0; i != m.size; ++i) {
-        for (int j = 0; j != m.size; ++j) {
-            printf("%f ", m.matrix[i][j]);
+    for (size_t i = 0; i != m.size; ++i) {
+        for (size_t j = 0; j != m.size; ++j) {
+            printf("%f ", m.matrix[m.size * i + j]);
         }
         printf("\n");
     }
 }
 
-static int readMatrixSizeFromStdIn() {
+static size_t readMatrixSizeFromStdIn() {
     char sizeStr[5];
     fgets(sizeStr, sizeof(sizeStr), stdin);
     char *end;
-    int size = strtol(sizeStr, &end, 10);
+    long size = strtol(sizeStr, &end, 10);
 
-    return size;
+    if (size >= 0) {
+        return (size_t) size;
+    } else {
+        fprintf(stderr, "%s", "Failed to read matrix from stdin.\n");
+        exit(EXIT_FAILURE);
+    }
 }
 
 static void read2DArrayFromStdIn(struct SquareMatrix m) {
-    for (int i = 0; i < m.size; ++i) {
-        for (int j = 0; j < m.size; ++j) {
-            scanf("%lf", &m.matrix[i][j]);
+    for (size_t i = 0; i < m.size; ++i) {
+        for (size_t j = 0; j < m.size; ++j) {
+            scanf("%lf", &m.matrix[m.size * i + j]);
         }
     }
 }
 
 struct SquareMatrix readMatrixFromStdIn() {
-    int size = readMatrixSizeFromStdIn();
+    size_t size = readMatrixSizeFromStdIn();
     struct SquareMatrix m = initMatrix(size);
     read2DArrayFromStdIn(m);
 
@@ -57,7 +56,7 @@ struct SquareMatrix readMatrixFromStdIn() {
 }
 
 
-struct SquareMatrix readMatrixFromStdInSized(int size) {
+struct SquareMatrix readMatrixFromStdInSized(size_t size) {
     struct SquareMatrix m = initMatrix(size);
     read2DArrayFromStdIn(m);
 
@@ -66,34 +65,34 @@ struct SquareMatrix readMatrixFromStdInSized(int size) {
 
 struct SquareMatrix copyMatrix(struct SquareMatrix m) {
     struct SquareMatrix result = initMatrix(m.size);
-    for (int i = 0; i < m.size; ++i) {
-        for (int j = 0; j < m.size; ++j) {
-            result.matrix[i][j] = m.matrix[i][j];
+    for (size_t i = 0; i < m.size; ++i) {
+        for (size_t j = 0; j < m.size; ++j) {
+            result.matrix[m.size * i + j] = m.matrix[m.size * i + j];
         }
     }
     return result;
 }
 
 void copyToMatrix(struct SquareMatrix from, struct SquareMatrix to) {
-    for (int i = 0; i < from.size; ++i) {
-        for (int j = 0; j < from.size; ++j) {
-            to.matrix[i][j] = from.matrix[i][j];
+    for (size_t i = 0; i < from.size; ++i) {
+        for (size_t j = 0; j < from.size; ++j) {
+            to.matrix[to.size * i + j] = from.matrix[from.size * i + j];
         }
     }
 }
 
-struct Vector getColumn(struct SquareMatrix m, int index) {
+struct Vector getColumn(struct SquareMatrix m, size_t index) {
     struct Vector v = initVector(m.size);
-    for (int i = 0; i < m.size; ++i) {
-        v.vector[i] = m.matrix[i][index];
+    for (size_t i = 0; i < m.size; ++i) {
+        v.vector[i] = m.matrix[m.size * i + index];
     }
     return v;
 }
 
-struct Vector getRow(struct SquareMatrix m, int index) {
+struct Vector getRow(struct SquareMatrix m, size_t index) {
     struct Vector v = initVector(m.size);
-    for (int i = 0; i < m.size; ++i) {
-        v.vector[i] = m.matrix[index][i];
+    for (size_t j = 0; j < m.size; ++j) {
+        v.vector[j] = m.matrix[m.size * index + j];
     }
     return v;
 }
@@ -101,7 +100,7 @@ struct Vector getRow(struct SquareMatrix m, int index) {
 struct Vector dotProduct(struct SquareMatrix m, struct Vector v) {
     struct Vector result = initVector(v.size);
 
-    for (int i = 0; i < v.size; ++i) {
+    for (size_t i = 0; i < v.size; ++i) {
         struct Vector row = getRow(m, i);
         result.vector[i] = scalarComposition(row, v);
         freeVector(row);
@@ -110,29 +109,29 @@ struct Vector dotProduct(struct SquareMatrix m, struct Vector v) {
     return result;
 }
 
-struct SquareMatrix zeroMatrix(int size) {
+struct SquareMatrix zeroMatrix(size_t size) {
     struct SquareMatrix m = initMatrix(size);
-    for (int i = 0; i < size; ++i) {
-        for (int j = 0; j < size; ++j) {
-            m.matrix[i][j] = 0.0;
+    for (size_t i = 0; i < size; ++i) {
+        for (size_t j = 0; j < size; ++j) {
+            m.matrix[m.size * i + j] = 0.0;
         }
     }
     return m;
 }
 
-struct SquareMatrix eyeMatrix(int size) {
+struct SquareMatrix eyeMatrix(size_t size) {
     struct SquareMatrix m = zeroMatrix(size);
-    for (int i = 0; i < size; ++i) {
-        m.matrix[i][i] = 1.0;
+    for (size_t i = 0; i < size; ++i) {
+        m.matrix[m.size * i + i] = 1.0;
     }
     return m;
 }
 
-struct SquareMatrix randomMatrix(int size) {
+struct SquareMatrix randomMatrix(size_t size) {
     struct SquareMatrix m = initMatrix(size);
-    for (int i = 0; i < size; ++i) {
-        for (int j = 0; j < size; ++j) {
-            m.matrix[i][j] = rand() % 10;
+    for (size_t i = 0; i < size; ++i) {
+        for (size_t j = 0; j < size; ++j) {
+            m.matrix[m.size * i + j] = rand() % 10;
         }
     }
     return m;

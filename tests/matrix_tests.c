@@ -20,10 +20,10 @@ void testMatrixCreation() {
 
 void testZero() {
     struct SquareMatrix m = zeroMatrix(3);
-    for (int i = 0; i < m.size; ++i) {
-        for (int j = 0; j < m.size; ++j) {
-            if (fabs(m.matrix[i][j]) > 10e-6) {
-                printf("testZero: FAILED. Contains element non-zero element: %lf. \n", m.matrix[i][j]);
+    for (size_t i = 0; i < m.size; ++i) {
+        for (size_t j = 0; j < m.size; ++j) {
+            if (fabs(m.matrix[m.size * i + j]) > 10e-6) {
+                printf("testZero: FAILED. Contains element non-zero element: %lf. \n", m.matrix[m.size * i + j]);
                 return;
             }
         }
@@ -33,14 +33,14 @@ void testZero() {
 
 void testEye() {
     struct SquareMatrix m = eyeMatrix(3);
-    for (int i = 0; i < m.size; ++i) {
-        for (int j = 0; j < m.size; ++j) {
-            if (i != j && fabs(m.matrix[i][j]) > 10e-6) {
-                printf("testEye: FAILED. Contains element non-zero element: %lf outside of diagonal. \n", m.matrix[i][j]);
+    for (size_t i = 0; i < m.size; ++i) {
+        for (size_t j = 0; j < m.size; ++j) {
+            if (i != j && fabs(m.matrix[m.size * i + j]) > 10e-6) {
+                printf("testEye: FAILED. Contains element non-zero element: %lf outside of diagonal. \n", m.matrix[m.size * i + j]);
                 return;
             }
-            if (i == j && fabs(m.matrix[i][j] - 1.0) > 10e-6) {
-                printf("testEye: FAILED. Contains element in diagonal: %lf != 1. \n", m.matrix[i][j]);
+            if (i == j && fabs(m.matrix[m.size * i + j] - 1.0) > 10e-6) {
+                printf("testEye: FAILED. Contains element in diagonal: %lf != 1. \n", m.matrix[m.size * i + j]);
                 return;
             }
         }
@@ -51,10 +51,10 @@ void testEye() {
 void testGetColumn() {
     struct SquareMatrix m = initMatrix(3);
 
-    int counter = 0;
-    for (int i = 0; i < m.size; ++i) {
-        for (int j = 0; j < m.size; ++j) {
-            m.matrix[i][j] = counter;
+    size_t counter = 0;
+    for (size_t i = 0; i < m.size; ++i) {
+        for (size_t j = 0; j < m.size; ++j) {
+            m.matrix[m.size * i + j] = counter;
             ++counter;
         }
     }
@@ -67,7 +67,7 @@ void testGetColumn() {
     struct Vector result = getColumn(m, 1);
 
     double epsilon = 10e-6;
-    for (int i = 0; i < expected.size; ++i) {
+    for (size_t i = 0; i < expected.size; ++i) {
         if (fabs(expected.vector[i] - result.vector[i]) < epsilon) {
             printf("testGetColumn: FAILED. At index %d result %lf != expected %lf \n",
                    i, result.vector[i], expected.vector[i]);
@@ -80,10 +80,10 @@ void testGetColumn() {
 void testGetRow() {
     struct SquareMatrix m = initMatrix(3);
 
-    int counter = 0;
-    for (int i = 0; i < m.size; ++i) {
-        for (int j = 0; j < m.size; ++j) {
-            m.matrix[i][j] = counter;
+    size_t counter = 0;
+    for (size_t i = 0; i < m.size; ++i) {
+        for (size_t j = 0; j < m.size; ++j) {
+            m.matrix[m.size * i + j] = counter;
             ++counter;
         }
     }
@@ -96,7 +96,7 @@ void testGetRow() {
     struct Vector result = getRow(m, 1);
 
     double epsilon = 10e-6;
-    for (int i = 0; i < expected.size; ++i) {
+    for (size_t i = 0; i < expected.size; ++i) {
         if (fabs(expected.vector[i] - result.vector[i]) < epsilon) {
             printf("testGetRow: FAILED. At index %d result %lf != expected %lf \n",
                    i, result.vector[i], expected.vector[i]);
@@ -113,9 +113,9 @@ void testDotProduct() {
     v.vector[2] = 3;
 
     struct SquareMatrix m = initMatrix(3);
-    for (int i = 0; i < m.size; ++i) {
-        for (int j = 0; j < m.size; ++j) {
-            m.matrix[i][j] = i + j;
+    for (size_t i = 0; i < m.size; ++i) {
+        for (size_t j = 0; j < m.size; ++j) {
+            m.matrix[m.size * i + j] = (double)(i + j);
         }
     }
 
@@ -125,7 +125,7 @@ void testDotProduct() {
     expected.vector[1] = 14;
     expected.vector[2] = 20;
 
-    for (int i = 0; i < result.size; ++i) {
+    for (size_t i = 0; i < result.size; ++i) {
         if (fabs(expected.vector[i] - result.vector[i]) > 1e-6) {
             printf("testDotProduct: FAILED. At index %d result %lf != expected %lf \n",
                     i, result.vector[i], expected.vector[i]);
@@ -136,7 +136,7 @@ void testDotProduct() {
 }
 
 void matrixTestSuite() {
-    for (int i = 0; i < 40; ++i) putchar('-');
+    for (size_t i = 0; i < 40; ++i) putchar('-');
     printf("\nMatrix tests:\n\n");
     testMatrixCreation();
     testZero();

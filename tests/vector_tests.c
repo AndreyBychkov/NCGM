@@ -21,13 +21,13 @@ void testVectorCreation() {
 }
 
 void testScalarComposition() {
-    int size = 3;
+    size_t size = 3;
     struct Vector v1 = initVector(size);
     struct Vector v2 = initVector(size);
 
-    for (int i = 0; i < size; ++i) {
-        v1.vector[i] = i + 1; // Will generate 1 2 3
-        v2.vector[i] = i + 2; // Will generate 2 3 4
+    for (size_t i = 0; i < size; ++i) {
+        v1.vector[i] = i + 1.0; // Will generate 1 2 3
+        v2.vector[i] = i + 2.0; // Will generate 2 3 4
     }
 
     double result = scalarComposition(v1, v2);
@@ -84,7 +84,7 @@ void testMAE() {
 }
 
 void vectorTestSuite() {
-    for (int i = 0; i < 40; ++i) putchar('-');
+    for (size_t i = 0; i < 40; ++i) putchar('-');
     printf("\nVector tests:\n\n");
     testVectorCreation();
     testScalarComposition();

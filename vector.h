@@ -10,19 +10,20 @@
 #include <stdbool.h>
 
 struct Vector {
-    int size;
+    size_t size;
     double *vector;
 };
 
-struct Vector initVector(int size);
-struct Vector zeroVector(int size);
-struct Vector onesVector(int size);
+struct Vector initVector(size_t size);
+struct Vector zeroVector(size_t size);
+struct Vector onesVector(size_t size);
+struct Vector randomVector(size_t size);
 void freeVector(struct Vector v);
 
 void printVector(struct Vector v);
 
 struct Vector readVectorFromStdIn();
-struct Vector readVectorFromStdInSized(int size);
+struct Vector readVectorFromStdInSized(size_t size);
 
 struct Vector copyVector(struct Vector v);
 void copyToVector(struct Vector from, struct Vector to);
@@ -43,8 +44,6 @@ void multiplyVectorOnNumberMutable(struct Vector changing, double factor);
 void divideVectorOnNumberMutable(struct Vector changing, double divisor);
 
 double meanAbsoluteErrorVector(struct Vector first, struct Vector second);
-
-struct Vector randomVector(int size);
 
 double scalarComposition(struct Vector v1, struct Vector v2);
 

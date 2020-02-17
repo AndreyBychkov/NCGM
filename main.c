@@ -13,7 +13,7 @@ struct Vector minusGrad(struct Vector x, struct SquareMatrix hessian, struct Vec
 }
 
 void stdInMain() {
-    int size = 0;
+    size_t size = 0;
     scanf("%d", &size);
     struct SquareMatrix hessian = readMatrixFromStdInSized(size);
 
@@ -28,7 +28,7 @@ void stdInMain() {
 }
 
 void predefinedMain() {
-    int size = 10000;
+    size_t size = 10000;
     struct SquareMatrix m = eyeMatrix(size);
     struct Vector v = randomVector(size);
 
