@@ -148,6 +148,30 @@ void divideVectorOnNumberMutable(struct Vector changing, double divisor) {
     }
 }
 
+void addVectorBuffered(struct Vector first, struct Vector second, double *buffer) {
+    for (size_t i = 0; i != first.size; ++i) {
+        buffer[i] = first.vector[i] + second.vector[i];
+    }
+}
+
+void subtractVectorBuffered(struct Vector first, struct Vector second, double *buffer) {
+    for (size_t i = 0; i != first.size; ++i) {
+        buffer[i] = first.vector[i] - second.vector[i];
+    }
+}
+
+void multiplyVectorOnNumberBuffered(struct Vector v, double factor, double *buffer) {
+    for (size_t i = 0; i != v.size; ++i) {
+        buffer[i] = v.vector[i] * factor;
+    }
+}
+
+void divideVectorOnNumberBuffered(struct Vector v, double divisor, double *buffer) {
+    for (size_t i = 0; i != v.size; ++i) {
+        buffer[i] = v.vector[i] / divisor;
+    }
+}
+
 struct Vector copyVector(struct Vector v) {
     struct Vector result = initVector(v.size);
     for (size_t i = 0; i < v.size; ++i) {

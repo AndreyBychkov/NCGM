@@ -43,6 +43,11 @@ void subtractVectorMutable(struct Vector changing, struct Vector another);
 void multiplyVectorOnNumberMutable(struct Vector changing, double factor);
 void divideVectorOnNumberMutable(struct Vector changing, double divisor);
 
+void addVectorBuffered(struct Vector first, struct Vector second, double *buffer);
+void subtractVectorBuffered(struct Vector first, struct Vector second, double *buffer);
+void multiplyVectorOnNumberBuffered(struct Vector v, double factor, double *buffer);
+void divideVectorOnNumberBuffered(struct Vector v, double divisor, double *buffer);
+
 double meanAbsoluteErrorVector(struct Vector first, struct Vector second);
 
 double scalarComposition(struct Vector v1, struct Vector v2);
