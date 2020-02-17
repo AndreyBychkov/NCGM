@@ -37,6 +37,9 @@ void testScalarComposition() {
     } else {
         printf("testScalarComposition: FAILED. Incorrect result: 20 != %lf. \n", result);
     }
+
+    freeVector(v1);
+    freeVector(v2);
 }
 
 
@@ -52,6 +55,11 @@ void testAddVector() {
     } else {
         printf("testAddVector: FAILED. \n");
     }
+
+    freeVector(first);
+    freeVector(second);
+    freeVector(result);
+    freeVector(expected);
 }
 
 void testSubtractVector() {
@@ -67,6 +75,11 @@ void testSubtractVector() {
     } else {
         printf("testSubtractVector: FAILED. \n");
     }
+
+    freeVector(first);
+    freeVector(second);
+    freeVector(result);
+    freeVector(expected);
 }
 
 void testMAE() {
@@ -81,6 +94,9 @@ void testMAE() {
     } else {
         printf("testMAE: FAILED. \n");
     }
+
+    freeVector(first);
+    freeVector(second);
 }
 
 void vectorTestSuite() {

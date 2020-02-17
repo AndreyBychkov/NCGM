@@ -16,6 +16,8 @@ void testMatrixCreation() {
     } else {
         printf("testMatrixCreation: PASSED. \n");
     }
+
+    freeMatrix(m);
 }
 
 void testZero() {
@@ -29,6 +31,8 @@ void testZero() {
         }
     }
     printf("testZero: PASSED. \n");
+
+    freeMatrix(m);
 }
 
 void testEye() {
@@ -46,6 +50,8 @@ void testEye() {
         }
     }
     printf("testEye: PASSED. \n");
+
+    freeMatrix(m);
 }
 
 void testGetColumn() {
@@ -75,6 +81,10 @@ void testGetColumn() {
         }
     }
     printf("testGetColumn: PASSED. \n");
+
+    freeMatrix(m);
+    freeVector(expected);
+    freeVector(result);
 }
 
 void testGetRow() {
@@ -104,6 +114,10 @@ void testGetRow() {
         }
     }
     printf("testGetRow: PASSED. \n");
+
+    freeMatrix(m);
+    freeVector(expected);
+    freeVector(result);
 }
 
 void testDotProduct() {
@@ -133,6 +147,11 @@ void testDotProduct() {
         }
     }
     printf("testDotProduct: PASSED \n");
+
+    freeMatrix(m);
+    freeVector(v);
+    freeVector(expected);
+    freeVector(result);
 }
 
 void matrixTestSuite() {
