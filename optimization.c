@@ -29,13 +29,18 @@ struct Vector optimizeFletcherReeves(struct SquareMatrix hessian,
     while (xDifference > minXDifference && (gradDifference > minGradDifference || iterationCounter > 0)) {
         struct Vector minusGrad = minusGradient(previousX, hessian, rightEqVector);
         double beta = scalarComposition(minusGrad, minusGrad) / scalarComposition(previousMinusGrad, previousMinusGrad);
-        struct Vector basisVector = addVector(minusGrad, multiplyVectorOnNumber(previousBasisVector, beta));
-        double alpha = scalarComposition(minusGrad, basisVector) /
-                       scalarComposition(dotProduct(hessian, basisVector), basisVector);
 
-        struct Vector xNew = addVector(previousX, multiplyVectorOnNumber(basisVector, alpha));
+        struct Vector prevBasisVectorBeta = multiplyVectorOnNumber(previousBasisVector, beta);
+        struct Vector basisVector = addVector(minusGrad, prevBasisVectorBeta);
+
+        struct Vector hessianBasisVector = dotProduct(hessian, basisVector);
+        double alpha = scalarComposition(minusGrad, basisVector) /
+                       scalarComposition(hessianBasisVector, basisVector);
+
+        struct Vector basisVectorAlpha = multiplyVectorOnNumber(basisVector, alpha);
+        struct Vector xNew = addVector(previousX, basisVectorAlpha);
         copyToVector(xNew, x);
-        freeVector(xNew);
+
 
         gradDifference = meanAbsoluteErrorVector(minusGrad, previousMinusGrad);
         xDifference = meanAbsoluteErrorVector(x, previousX);
@@ -44,7 +49,11 @@ struct Vector optimizeFletcherReeves(struct SquareMatrix hessian,
         copyToVector(minusGrad, previousMinusGrad);
         copyToVector(basisVector, previousBasisVector);
 
-        freeVector(previousMinusGrad);
+        freeVector(xNew);
+        freeVector(minusGrad);
+        freeVector(prevBasisVectorBeta);
+        freeVector(basisVectorAlpha);
+        freeVector(hessianBasisVector);
         freeVector(basisVector);
 
 //        if (iterationCounter % 10 == 0) {
@@ -52,11 +61,13 @@ struct Vector optimizeFletcherReeves(struct SquareMatrix hessian,
 //                   iterationCounter, xDifference, gradDifference);
 //            fflush(stdout);
 //        }
-        ++iterationCounter;
+//        ++iterationCounter;
     }
 
 //    printf("\nIterations passed: %d. \n", iterationCounter);
 
-//    freeVector(previousX); TODO(Probably bug with memory here)
+    freeVector(previousX);
+    freeVector(previousMinusGrad);
+    freeVector(previousBasisVector);
     return x;
 }
