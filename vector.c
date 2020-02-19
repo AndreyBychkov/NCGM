@@ -36,7 +36,7 @@ void freeVector(struct Vector v) {
 
 void printVector(struct Vector v) {
     for (size_t i = 0; i < v.size; ++i) {
-        printf("%lf ", v.vector[i]);
+        printf("%0.3lf ", v.vector[i]);
     }
     printf("\n");
     fflush(stdout);
