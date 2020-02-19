@@ -162,12 +162,12 @@ struct Vector dotProduct(struct SquareMatrix m, struct Vector v) {
 }
 
 struct Vector dotProductParallel(struct SquareMatrix m, struct Vector v) {
-    struct Vector result = initVector(v.size);
-
-    #pragma omp parallel num_threads(12) default(shared)
+    const size_t size = v.size;
+    struct Vector result = initVector(size);
+    #pragma omp parallel num_threads(12) default(none) shared(m, v, result)
     {
         #pragma omp for
-        for (size_t i = 0; i < v.size; ++i) {
+        for (size_t i = 0; i < size; ++i) {
             struct Vector row = getRow(m, i);
             result.vector[i] = scalarComposition(row, v);
             freeVector(row);
@@ -187,7 +187,7 @@ void dotProductBuffered(struct SquareMatrix m, struct Vector v, double *buffer) 
 
 struct Vector dotProductParallelBuffered(struct SquareMatrix m, struct Vector v, double *buffer) {
     const size_t size = v.size;
-    #pragma omp parallel num_threads(12) default(shared)
+    #pragma omp parallel num_threads(12) default(none) shared(m, v, buffer)
     {
         #pragma omp for
         for (size_t i = 0; i < size; ++i) {
