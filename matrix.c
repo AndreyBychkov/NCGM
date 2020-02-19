@@ -4,6 +4,8 @@
 #include "matrix.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
+#include <omp.h>
 
 struct SquareMatrix initMatrix(size_t size) {
     struct SquareMatrix m;
@@ -90,6 +92,17 @@ struct SquareMatrix readMatrixFromStdInSized(size_t size) {
     return m;
 }
 
+bool isMatrixEqual(struct SquareMatrix first, struct SquareMatrix second) {
+    for (size_t i = 0; i < first.size; ++i) {
+        for (size_t j = 0; j < first.size; ++j) {
+            double elem_diff = fabs(first.matrix[first.size * i + j] - second.matrix[second.size * i + j]);
+            if (elem_diff > 1e-6)
+                return false;
+        }
+    }
+    return true;
+}
+
 struct SquareMatrix copyMatrix(struct SquareMatrix m) {
     struct SquareMatrix result = initMatrix(m.size);
     for (size_t i = 0; i < m.size; ++i) {
@@ -148,12 +161,40 @@ struct Vector dotProduct(struct SquareMatrix m, struct Vector v) {
     return result;
 }
 
+struct Vector dotProductParallel(struct SquareMatrix m, struct Vector v) {
+    struct Vector result = initVector(v.size);
+
+    #pragma omp parallel num_threads(12) default(shared)
+    {
+        #pragma omp for
+        for (size_t i = 0; i < v.size; ++i) {
+            struct Vector row = getRow(m, i);
+            result.vector[i] = scalarComposition(row, v);
+            freeVector(row);
+        }
+    }
+    return result;
+}
+
 void dotProductBuffered(struct SquareMatrix m, struct Vector v, double *buffer) {
     struct Vector bufferVector = initVector(v.size);
 
     for (size_t i = 0; i < v.size; ++i) {
         getRowBuffered(m, i, bufferVector.vector);
         buffer[i] = scalarComposition(bufferVector, v);
+    }
+}
+
+struct Vector dotProductParallelBuffered(struct SquareMatrix m, struct Vector v, double *buffer) {
+    const size_t size = v.size;
+    #pragma omp parallel num_threads(12) default(shared)
+    {
+        #pragma omp for
+        for (size_t i = 0; i < size; ++i) {
+            struct Vector row = getRow(m, i);
+            buffer[i] = scalarComposition(row, v);
+            freeVector(row);
+        }
     }
 }
 

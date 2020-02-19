@@ -24,6 +24,8 @@ void printMatrix(struct SquareMatrix m);
 struct SquareMatrix readMatrixFromStdIn();
 struct SquareMatrix readMatrixFromStdInSized(size_t size);
 
+bool isMatrixEqual(struct SquareMatrix first, struct SquareMatrix second);
+
 struct SquareMatrix copyMatrix(struct SquareMatrix m);
 void copyToMatrix(struct SquareMatrix from, struct SquareMatrix to);
 
@@ -33,6 +35,9 @@ void getColumnBuffered(struct SquareMatrix m, size_t index, double *buffer);
 void getRowBuffered(struct SquareMatrix m, size_t index, double *buffer);
 
 struct Vector dotProduct(struct SquareMatrix m, struct Vector v);
+struct Vector dotProductParallel(struct SquareMatrix m, struct Vector v);
 void dotProductBuffered(struct SquareMatrix m, struct Vector v, double *buffer);
+struct Vector dotProductParallelBuffered(struct SquareMatrix m, struct Vector v, double *buffer);
+
 
 #endif //TEST_MATRIX_H

@@ -3,6 +3,7 @@
 #include "matrix.h"
 #include "vector.h"
 #include "optimization.h"
+#include <time.h>
 
 struct Vector minusGrad(struct Vector x, struct SquareMatrix hessian, struct Vector rightEqVector) {
     return multiplyVectorOnNumber(
@@ -39,8 +40,44 @@ void predefinedMain() {
     freeVector(res);
 }
 
+void executionCompareMain() {
+    size_t size = 10000;
+    struct SquareMatrix m = eyeMatrix(size);
+    struct Vector v = randomVector(size);
+    struct Vector res = initVector(size);
+    struct Vector resParallel = initVector(size);
+    clock_t start, finish;
+
+    start = clock();
+    dotProductBuffered(m, v, res.vector);
+    finish = clock();
+    float seq_time = (float) (finish - start) / CLOCKS_PER_SEC;
+    printf("Sequential time: %f\n", seq_time);
+
+    start = clock();
+//    dotProductParallelBuffered(m, v, resParallel.vector);
+    resParallel = dotProductParallel(m, v);
+    finish = clock();
+    float parallel_time = (float) (finish - start) / CLOCKS_PER_SEC;
+    printf("Parallel time: %f\n", parallel_time);
+
+    printf("Time coef: %f\n", seq_time / parallel_time);
+
+    bool isResEqual = equalsVector(res, resParallel);
+    if (!isResEqual) {
+        printf("Results are not equal!");
+        printVector(res);
+        printVector(resParallel);
+    }
+
+    freeMatrix(m);
+    freeVector(v);
+    freeVector(res);
+    freeVector(resParallel);
+}
+
 int main() {
-    predefinedMain();
+    executionCompareMain();
 
     return 0;
 }
