@@ -3,6 +3,7 @@
 #include "matrix.h"
 #include "vector.h"
 #include "optimization.h"
+#include "optimization_omp.h"
 #include "matrix_omp.h"
 #include <time.h>
 
@@ -65,23 +66,22 @@ void dotProductExecutionCompareMain() {
     freeVector(resParallel);
 }
 
-void foo() {
-    size_t size = 10000;
-    struct SquareMatrix m = randomSymmetricMatrix(size);
+void optimizationFletcherReevesExecutionCompareMain() {
+    size_t size = 200;
+    struct SquareMatrix m = randomSymmetricMatrixOMP(size);
     struct Vector v = randomVector(size);
     struct Vector res = initVector(size);
     struct Vector resParallel = initVector(size);
     clock_t start, finish;
 
     start = clock();
-    res = optimizeFletcherReeves(m, v, minusGrad);
+    res = optimizeFletcherReevesOMP(m, v, minusGrad);
     finish = clock();
     float seq_time = (float) (finish - start) / CLOCKS_PER_SEC;
     printf("Sequential time: %f\n", seq_time);
 
     start = clock();
-//    dotProductParallelBuffered(m, v, resParallel.vector);
-    resParallel = dotProductOMP(m, v);
+    resParallel = optimizeFletcherReevesOMP(m, v, minusGrad);
     finish = clock();
     float parallel_time = (float) (finish - start) / CLOCKS_PER_SEC;
     printf("Parallel time: %f\n", parallel_time);
@@ -102,7 +102,7 @@ void foo() {
 }
 
 int main() {
-    dotProductExecutionCompareMain();
+    optimizationFletcherReevesExecutionCompareMain();
 
     return 0;
 }
