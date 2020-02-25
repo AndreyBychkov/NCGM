@@ -3,6 +3,7 @@
 #include "matrix.h"
 #include "vector.h"
 #include "optimization.h"
+#include "matrix_omp.h"
 #include <time.h>
 
 struct Vector minusGrad(struct Vector x, struct SquareMatrix hessian, struct Vector rightEqVector) {
@@ -30,7 +31,7 @@ void stdInMain() {
 
 void dotProductExecutionCompareMain() {
     size_t size = 10000;
-    struct SquareMatrix m = randomMatrix(size);
+    struct SquareMatrix m = randomMatrixOMP(size);
     struct Vector v = randomVector(size);
     struct Vector res = initVector(size);
     struct Vector resParallel = initVector(size);
@@ -43,8 +44,44 @@ void dotProductExecutionCompareMain() {
     printf("Sequential time: %f\n", seq_time);
 
     start = clock();
+//    dotProductBufferedOMP(m, v, resParallel.vector);
+    resParallel = dotProductOMP(m, v);
+    finish = clock();
+    float parallel_time = (float) (finish - start) / CLOCKS_PER_SEC;
+    printf("Parallel time: %f\n", parallel_time);
+
+    printf("Time coef: %f\n", seq_time / parallel_time);
+
+    bool isResEqual = equalsVector(res, resParallel);
+    if (!isResEqual) {
+        printf("Results are not equal!");
+        printVector(res);
+        printVector(resParallel);
+    }
+
+    freeMatrix(m);
+    freeVector(v);
+    freeVector(res);
+    freeVector(resParallel);
+}
+
+void foo() {
+    size_t size = 10000;
+    struct SquareMatrix m = randomSymmetricMatrix(size);
+    struct Vector v = randomVector(size);
+    struct Vector res = initVector(size);
+    struct Vector resParallel = initVector(size);
+    clock_t start, finish;
+
+    start = clock();
+    res = optimizeFletcherReeves(m, v, minusGrad);
+    finish = clock();
+    float seq_time = (float) (finish - start) / CLOCKS_PER_SEC;
+    printf("Sequential time: %f\n", seq_time);
+
+    start = clock();
 //    dotProductParallelBuffered(m, v, resParallel.vector);
-    resParallel = dotProductParallel(m, v);
+    resParallel = dotProductOMP(m, v);
     finish = clock();
     float parallel_time = (float) (finish - start) / CLOCKS_PER_SEC;
     printf("Parallel time: %f\n", parallel_time);

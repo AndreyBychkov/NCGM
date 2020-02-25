@@ -36,9 +36,7 @@ void getColumnBuffered(struct SquareMatrix m, size_t index, double *buffer);
 void getRowBuffered(struct SquareMatrix m, size_t index, double *buffer);
 
 struct Vector dotProduct(struct SquareMatrix m, struct Vector v);
-struct Vector dotProductParallel(struct SquareMatrix m, struct Vector v);
 void dotProductBuffered(struct SquareMatrix m, struct Vector v, double *buffer);
-struct Vector dotProductParallelBuffered(struct SquareMatrix m, struct Vector v, double *buffer);
 
 
 #endif //TEST_MATRIX_H
