@@ -7,7 +7,7 @@
 #include "../vector.h"
 #include "../optimization.h"
 
-struct Vector minusGrad(struct Vector x, struct SquareMatrix hessian, struct Vector rightEqVector) {
+static struct Vector minusGrad(struct Vector x, struct SquareMatrix hessian, struct Vector rightEqVector) {
     return multiplyVectorOnNumber(
             subtractVector(
                     dotProduct(hessian, x),

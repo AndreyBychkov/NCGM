@@ -13,4 +13,4 @@ add_executable(Main main.c matrix.c optimization.c optimization.h vector.c vecto
 add_executable(Tests tests/testmain.c
         tests/vector_tests.c vector.c
         tests/matrix_tests.c tests/matrix_tests.h matrix.c
-        tests/optimizations_tests.c tests/optimizations_tests.h optimization.h optimization.c matrix_omp.c matrix_omp.h optimization_omp.c optimization_omp.h vector_omp.c vector_omp.h tests/vector_benchmarks.c tests/vector_benchmarks.h)
+        tests/optimizations_tests.c tests/optimizations_tests.h optimization.h optimization.c matrix_omp.c matrix_omp.h optimization_omp.c optimization_omp.h vector_omp.c vector_omp.h tests/vector_benchmarks.c tests/vector_benchmarks.h tests/optimization_benchmarks.c tests/optimization_benchmarks.h)
