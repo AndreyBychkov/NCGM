@@ -67,7 +67,7 @@ void dotProductExecutionCompareMain() {
 }
 
 void optimizationFletcherReevesExecutionCompareMain() {
-    size_t size = 200;
+    size_t size = 400;
     struct SquareMatrix m = randomSymmetricMatrixOMP(size);
     struct Vector v = randomVector(size);
     struct Vector res = initVector(size);

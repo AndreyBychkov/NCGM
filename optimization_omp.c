@@ -5,6 +5,7 @@
 #include <float.h>
 #include "optimization_omp.h"
 #include "matrix_omp.h"
+#include "vector_omp.h"
 
 struct Vector optimizeFletcherReevesOMP(struct SquareMatrix hessian,
                                         struct Vector rightEqVector,
@@ -29,7 +30,8 @@ struct Vector optimizeFletcherReevesOMP(struct SquareMatrix hessian,
     int iterationCounter = 0;
     while (xDifference > minXDifference && (gradDifference > minGradDifference || iterationCounter > 0)) {
         struct Vector minusGrad = minusGradient(previousX, hessian, rightEqVector);
-        double beta = scalarComposition(minusGrad, minusGrad) / scalarComposition(previousMinusGrad, previousMinusGrad);
+        double beta = scalarComposition(minusGrad, minusGrad)
+                    / scalarComposition(previousMinusGrad, previousMinusGrad);
 
         multiplyVectorOnNumberBuffered(previousBasisVector, beta, prevBasisVectorBeta.vector);
         addVectorBuffered(minusGrad, prevBasisVectorBeta, basisVector.vector);
