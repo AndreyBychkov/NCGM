@@ -114,7 +114,7 @@ double scalarCompositionOMP(struct Vector v1, struct Vector v2) {
     double result = 0;
     #pragma omp parallel default(none) shared(v1, v2, result)
     {
-    #pragma omp for reduction(+:result)
+        #pragma omp for reduction(+:result)
         for (size_t i = 0; i < v1.size; ++i) {
             result += v1.vector[i] * v2.vector[i];
         }

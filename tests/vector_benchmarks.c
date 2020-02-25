@@ -9,7 +9,7 @@
 #include "math.h"
 
 void scalarCompositionOMPBenchmark() {
-    size_t size = 1000;
+    size_t size = 10000;
     struct Vector first = randomVector(size);
     struct Vector second = randomVector(size);
     double resSequential;
