@@ -46,7 +46,6 @@ struct Vector optimizeFletcherReeves(struct SquareMatrix hessian,
         addVectorBuffered(previousX, basisVectorAlpha, xNew.vector);
         copyToVector(xNew, x);
 
-
         gradDifference = meanAbsoluteErrorVector(minusGrad, previousMinusGrad);
         xDifference = meanAbsoluteErrorVector(x, previousX);
 
@@ -54,19 +53,11 @@ struct Vector optimizeFletcherReeves(struct SquareMatrix hessian,
         copyToVector(minusGrad, previousMinusGrad);
         copyToVector(basisVector, previousBasisVector);
 
-
         freeVector(minusGrad);
 
-
-//        if (iterationCounter % 10 == 0) {
-//            printf("\rCurrent iteration: %d. X MAE: %.7lf. Gradient MAE: %.7lf",
-//                   iterationCounter, xDifference, gradDifference);
-//            fflush(stdout);
-//        }
         ++iterationCounter;
     }
 
-//    printf("\nIterations passed: %d. \n", iterationCounter);
     freeVector(xNew);
     freeVector(previousX);
     freeVector(previousMinusGrad);

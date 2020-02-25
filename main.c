@@ -28,21 +28,9 @@ void stdInMain() {
     freeVector(xPredicted);
 }
 
-void predefinedMain() {
+void dotProductExecutionCompareMain() {
     size_t size = 10000;
-    struct SquareMatrix m = eyeMatrix(size);
-    struct Vector v = randomVector(size);
-
-    struct Vector res = dotProduct(m, v);
-
-    freeMatrix(m);
-    freeVector(v);
-    freeVector(res);
-}
-
-void executionCompareMain() {
-    size_t size = 10000;
-    struct SquareMatrix m = eyeMatrix(size);
+    struct SquareMatrix m = randomMatrix(size);
     struct Vector v = randomVector(size);
     struct Vector res = initVector(size);
     struct Vector resParallel = initVector(size);
@@ -77,7 +65,7 @@ void executionCompareMain() {
 }
 
 int main() {
-    executionCompareMain();
+    dotProductExecutionCompareMain();
 
     return 0;
 }

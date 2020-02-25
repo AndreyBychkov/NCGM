@@ -17,6 +17,7 @@ struct SquareMatrix initMatrix(size_t size);
 struct SquareMatrix zeroMatrix(size_t size);
 struct SquareMatrix eyeMatrix(size_t size);
 struct SquareMatrix randomMatrix(size_t size);
+struct SquareMatrix randomSymmetricMatrix(size_t size);
 void freeMatrix(struct SquareMatrix m);
 
 void printMatrix(struct SquareMatrix m);
