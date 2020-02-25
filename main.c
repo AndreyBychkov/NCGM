@@ -75,7 +75,7 @@ void optimizationFletcherReevesExecutionCompareMain() {
     clock_t start, finish;
 
     start = clock();
-    res = optimizeFletcherReevesOMP(m, v, minusGrad);
+    res = optimizeFletcherReeves(m, v, minusGrad);
     finish = clock();
     float seq_time = (float) (finish - start) / CLOCKS_PER_SEC;
     printf("Sequential time: %f\n", seq_time);
