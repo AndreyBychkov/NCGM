@@ -5,12 +5,14 @@
 #include "vector_tests.h"
 #include "matrix_tests.h"
 #include "optimizations_tests.h"
+#include "vector_benchmarks.h"
 
 int main(void) {
 
     vectorTestSuite();
     matrixTestSuite();
     optimizationTestSuite();
+    vectorBenchmarkSuite();
 
     return 0;
 }
