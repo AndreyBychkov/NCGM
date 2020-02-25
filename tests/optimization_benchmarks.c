@@ -19,7 +19,7 @@ static struct Vector minusGrad(struct Vector x, struct SquareMatrix hessian, str
     return result;
 }
 
-struct Vector minusGradOMP(struct Vector x, struct SquareMatrix hessian, struct Vector rightEqVector) {
+static struct Vector minusGradOMP(struct Vector x, struct SquareMatrix hessian, struct Vector rightEqVector) {
     struct Vector hessX = dotProductOMP(hessian, x);
     struct Vector diffVector = subtractVector(hessX, rightEqVector);
     struct Vector result =  minus(diffVector);

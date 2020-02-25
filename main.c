@@ -7,12 +7,24 @@
 #include "matrix_omp.h"
 #include <time.h>
 
-struct Vector minusGrad(struct Vector x, struct SquareMatrix hessian, struct Vector rightEqVector) {
-    return multiplyVectorOnNumber(
-            subtractVector(
-                    dotProduct(hessian, x),
-                    rightEqVector),
-            -1);
+static struct Vector minusGrad(struct Vector x, struct SquareMatrix hessian, struct Vector rightEqVector) {
+    struct Vector hessX = dotProduct(hessian, x);
+    struct Vector diffVector = subtractVector(hessX, rightEqVector);
+    struct Vector result =  minus(diffVector);
+
+    freeVector(hessX);
+    freeVector(diffVector);
+    return result;
+}
+
+static struct Vector minusGradOMP(struct Vector x, struct SquareMatrix hessian, struct Vector rightEqVector) {
+    struct Vector hessX = dotProductOMP(hessian, x);
+    struct Vector diffVector = subtractVector(hessX, rightEqVector);
+    struct Vector result =  minus(diffVector);
+
+    freeVector(hessX);
+    freeVector(diffVector);
+    return result;
 }
 
 void stdInMain() {
@@ -22,7 +34,7 @@ void stdInMain() {
 
     struct Vector b  = readVectorFromStdInSized(size);
 
-    struct Vector xPredicted  = optimizeFletcherReeves(hessian, b, minusGrad);
+    struct Vector xPredicted  = optimizeFletcherReevesOMP(hessian, b, minusGradOMP);
     printVector(xPredicted);
 
     freeMatrix(hessian);
@@ -66,43 +78,8 @@ void dotProductExecutionCompareMain() {
     freeVector(resParallel);
 }
 
-void optimizationFletcherReevesExecutionCompareMain() {
-    size_t size = 400;
-    struct SquareMatrix m = randomSymmetricMatrixOMP(size);
-    struct Vector v = randomVector(size);
-    struct Vector res = initVector(size);
-    struct Vector resParallel = initVector(size);
-    clock_t start, finish;
-
-    start = clock();
-    res = optimizeFletcherReeves(m, v, minusGrad);
-    finish = clock();
-    float seq_time = (float) (finish - start) / CLOCKS_PER_SEC;
-    printf("Sequential time: %f\n", seq_time);
-
-    start = clock();
-    resParallel = optimizeFletcherReevesOMP(m, v, minusGrad);
-    finish = clock();
-    float parallel_time = (float) (finish - start) / CLOCKS_PER_SEC;
-    printf("Parallel time: %f\n", parallel_time);
-
-    printf("Time coef: %f\n", seq_time / parallel_time);
-
-    bool isResEqual = equalsVector(res, resParallel);
-    if (!isResEqual) {
-        printf("Results are not equal!");
-        printVector(res);
-        printVector(resParallel);
-    }
-
-    freeMatrix(m);
-    freeVector(v);
-    freeVector(res);
-    freeVector(resParallel);
-}
-
 int main() {
-    optimizationFletcherReevesExecutionCompareMain();
+    stdInMain();
 
     return 0;
 }
