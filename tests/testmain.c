@@ -6,6 +6,7 @@
 #include "matrix_tests.h"
 #include "optimizations_tests.h"
 #include "vector_benchmarks.h"
+#include "matrix_benchmarks.h"
 #include "optimization_benchmarks.h"
 
 int main(void) {
@@ -14,6 +15,7 @@ int main(void) {
     matrixTestSuite();
     optimizationTestSuite();
     vectorBenchmarkSuite();
+    matrixBenchmarkSuite();
     optimizationBenchmarkSuite();
 
     return 0;
