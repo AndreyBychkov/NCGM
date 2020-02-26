@@ -33,7 +33,7 @@ void stdInMain() {
     struct SquareMatrix hessian = readMatrixFromStdInSized(size);
     struct Vector b  = readVectorFromStdInSized(size);
     struct Vector xPredicted  = optimizeFletcherReevesOMP(hessian, b, minusGradOMP);
-    printVector(xPredicted);
+    printVectorPrecise(xPredicted);
 
     freeMatrix(hessian);
     freeVector(b);

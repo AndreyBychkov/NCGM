@@ -42,6 +42,14 @@ void printVector(struct Vector v) {
     fflush(stdout);
 }
 
+void printVectorPrecise(struct Vector v) {
+    for (size_t i = 0; i < v.size; ++i) {
+        printf("%lf ", v.vector[i]);
+    }
+    printf("\n");
+    fflush(stdout);
+}
+
 static size_t readVectorSizeFromStdIn() {
     char sizeStr[5];
     fgets(sizeStr, sizeof(sizeStr), stdin);

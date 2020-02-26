@@ -21,6 +21,7 @@ struct Vector randomVector(size_t size);
 void freeVector(struct Vector v);
 
 void printVector(struct Vector v);
+void printVectorPrecise(struct Vector v);
 
 struct Vector readVectorFromStdIn();
 struct Vector readVectorFromStdInSized(size_t size);
