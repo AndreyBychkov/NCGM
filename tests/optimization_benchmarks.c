@@ -30,11 +30,11 @@ static struct Vector minusGradOMP(struct Vector x, struct SquareMatrix hessian, 
 }
 
 void fletcherReevesOMPBenchmark() {
-    size_t size = 500;
+    size_t size = 300;
     struct SquareMatrix hess = randomSymmetricMatrixOMP(size);
     struct Vector v = randomVector(size);
-    struct Vector res = initVector(size);
-    struct Vector resParallel = initVector(size);
+    struct Vector res;
+    struct Vector resParallel;
     clock_t start, finish;
 
     printf("fletcherReevesOMPBenchmark:\n");
