@@ -6,6 +6,7 @@
 #include "optimization_omp.h"
 #include "matrix_omp.h"
 #include <time.h>
+#include <mpi.h>
 
 static struct Vector minusGrad(struct Vector x, struct SquareMatrix hessian, struct Vector rightEqVector) {
     struct Vector hessX = dotProduct(hessian, x);
@@ -40,8 +41,15 @@ void stdInMain() {
     freeVector(xPredicted);
 }
 
-int main() {
-    stdInMain();
+int main(int argc, char* argv[]) {
+    int numtasks, rank;
+    MPI_Init(&argc, &argv);
 
+    MPI_Comm_size(MPI_COMM_WORLD, &numtasks);
+    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+
+    printf("Hello from process %d\n", rank);
+
+    MPI_Finalize();
     return 0;
 }
