@@ -16,7 +16,7 @@ add_executable(Main main.c
         vector.c vector.h
         matrix_omp.c matrix_omp.h
         optimization_omp.c optimization_omp.h
-        vector_omp.c vector_omp.h)
+        vector_omp.c vector_omp.h matrix_mpi.c matrix_mpi.h)
 add_executable(Tests tests/testmain.c
         tests/vector_tests.c vector.c
         tests/matrix_tests.c tests/matrix_tests.h matrix.c
