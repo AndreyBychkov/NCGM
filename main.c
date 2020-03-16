@@ -41,15 +41,66 @@ void stdInMain() {
     freeVector(xPredicted);
 }
 
-int main(int argc, char* argv[]) {
-    int numtasks, rank;
-    MPI_Init(&argc, &argv);
+void multiply(double *A, double *B, double *C, int istart, int iend, size_t size)
+{
+    for (int i = istart; i <= iend; ++i) {
+        for (int j = 0; j < size; ++j) {
+            for (int k = 0; k < size; ++k) {
+                C[i*size + j] += A[i*size + k] * B[k*size + j];
+            }
+        }
+    }
+}
 
-    MPI_Comm_size(MPI_COMM_WORLD, &numtasks);
+int main(int argc, char* argv[])
+{
+    int rank, procNum;
+    int istart, iend;
+    size_t size = 10;
+    struct SquareMatrix A = eyeMatrix(size);
+    struct SquareMatrix B = eyeMatrix(size);
+    struct SquareMatrix C = initMatrix(size);
+    struct SquareMatrix Ctemp = initMatrix(size);
+
+    MPI_Init(&argc, &argv);
+    MPI_Comm_size(MPI_COMM_WORLD, &procNum);
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
-    printf("Hello from process %d\n", rank);
+    MPI_Barrier(MPI_COMM_WORLD);
+
+    MPI_Bcast(A.matrix, size * size, MPI_FLOAT, 0, MPI_COMM_WORLD);
+    MPI_Bcast(B.matrix, size * size, MPI_FLOAT, 0, MPI_COMM_WORLD);
+    MPI_Bcast(C.matrix, size * size, MPI_FLOAT, 0, MPI_COMM_WORLD);
+
+    istart = (size / procNum) * rank;
+    iend = (size / procNum) * (rank + 1) - 1;
+
+    multiply(A.matrix, B.matrix, C.matrix, istart, iend, size);
+
+    // Gather computed results.
+    MPI_Gather(C.matrix + (size / procNum * rank),
+               size * size / procNum,
+               MPI_FLOAT,
+               Ctemp.matrix + (size / procNum * rank),
+               size * size / procNum,
+               MPI_FLOAT,
+               0,
+               MPI_COMM_WORLD);
+
+    if (rank == 0) {
+        // Compute remaining
+        if (size % procNum > 0) {
+            multiply(A.matrix, B.matrix, C.matrix, (size / procNum) * procNum, size - 1, size);
+        }
+    }
+
+    MPI_Barrier(MPI_COMM_WORLD);
 
     MPI_Finalize();
+
+    if (rank == 0) {
+        printMatrix(C);
+    }
+
     return 0;
 }
