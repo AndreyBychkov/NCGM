@@ -45,21 +45,48 @@ void stdInMain() {
 int main(int argc, char* argv[])
 {
     int rank, procNum;
-    size_t size = 10;
+    size_t size = 1200;
     struct SquareMatrix m = eyeMatrix(size);
     struct Vector v = onesVector(size);
-    struct Vector res;
+    struct Vector result = initVector(size);
 
     MPI_Init(&argc, &argv);
     MPI_Comm_size(MPI_COMM_WORLD, &procNum);
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
-   res = dotProductMPI(m, v);
+    size_t numRowsEach = size / procNum;
+    size_t numItemsEach = size * numRowsEach;
+    double *subResultBuf = (double*)malloc(sizeof(double) * numRowsEach);
+    double *subMatrix = (double*)malloc(sizeof(double) * numItemsEach);
+
+    MPI_Bcast(v.vector, size, MPI_DOUBLE, 0, MPI_COMM_WORLD);
+    MPI_Scatter(m.matrix, numItemsEach, MPI_DOUBLE, subMatrix, numItemsEach, MPI_DOUBLE, 0, MPI_COMM_WORLD);
+
+    for (int i = 0; i != numRowsEach; ++i) {
+        subResultBuf[i] = 0;
+        for (int j = 0; j != size; ++j) {
+            subResultBuf[i] += subMatrix[i * numRowsEach +  j] * v.vector[j];
+        }
+    }
+
+
+    MPI_Gather(subResultBuf, numRowsEach, MPI_DOUBLE, result.vector, numRowsEach, MPI_DOUBLE, 0, MPI_COMM_WORLD);
+
+    free(subMatrix);
+    free(subResultBuf);
 
     MPI_Finalize();
 
     if (rank == 0) {
-        printVector(res);
+        if (!equalsVector(v, result)) {
+            printf("Vectors are not equal!\n");
+            printVector(v);
+            printVector(result);
+        }
+
+        freeMatrix(m);
+        freeVector(v);
+        freeVector(result);
     }
 
     return 0;
