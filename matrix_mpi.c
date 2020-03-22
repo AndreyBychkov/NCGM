@@ -16,6 +16,10 @@ struct Vector dotProductMPI(struct SquareMatrix m, struct Vector v) {
     size_t numItemsEach = size * numRowsEach;
     double *subResultBuf = (double*)malloc(sizeof(double) * numRowsEach);
     double *subMatrix = (double*)malloc(sizeof(double) * numItemsEach);
+    if (subMatrix == NULL) {
+        printf("Allocation error: probably not enough memory.");
+        exit(-1);
+    }
 
     MPI_Bcast(v.vector, size, MPI_DOUBLE, 0, MPI_COMM_WORLD);
     MPI_Scatter(m.matrix, numItemsEach, MPI_DOUBLE, subMatrix, numItemsEach, MPI_DOUBLE, 0, MPI_COMM_WORLD);
