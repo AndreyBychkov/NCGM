@@ -8,5 +8,6 @@
 #include "matrix.h"
 
 struct Vector dotProductMPI(struct SquareMatrix m, struct Vector v);
+void dotProductMPIBuffered(struct SquareMatrix m, struct Vector v, double* buffer);
 
 #endif //NCGM_MATRIX_MPI_H

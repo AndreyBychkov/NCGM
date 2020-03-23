@@ -6,6 +6,7 @@
 #include "optimization.h"
 #include "optimization_omp.h"
 #include "matrix_omp.h"
+#include "optimization_mpi.h"
 #include <time.h>
 #include <mpi.h>
 #include "matrix_mpi.h"
@@ -30,6 +31,16 @@ static struct Vector minusGradOMP(struct Vector x, struct SquareMatrix hessian, 
     return result;
 }
 
+static struct Vector minusGradMPI(struct Vector x, struct SquareMatrix hessian, struct Vector rightEqVector) {
+    struct Vector hessX = dotProductMPI(hessian, x);
+    struct Vector diffVector = subtractVector(hessX, rightEqVector);
+    struct Vector result =  minus(diffVector);
+
+    freeVector(hessX);
+    freeVector(diffVector);
+    return result;
+}
+
 void stdInMain() {
     size_t size = 0;
     scanf("%d", &size);
@@ -43,25 +54,36 @@ void stdInMain() {
     freeVector(xPredicted);
 }
 
-int main(int argc, char* argv[])
-{
+void stdInMPIMain(int argc, char* argv[]) {
     int rank, procNum;
-    int size = 9000;
-    struct SquareMatrix m = randomMatrix(size);
-    struct Vector v = randomVector(size);
-    struct Vector resSeq = dotProduct(m, v);
+    int size;
+    struct SquareMatrix hessian;
+    struct Vector b, xPredicted;
 
     MPI_Init(&argc, &argv);
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
-    struct Vector resMPI = dotProductMPI(m, v);
+    if (rank == 0) {
+        scanf("%d", &size);
+        hessian = readMatrixFromStdInSized(size);
+        b  = readVectorFromStdInSized(size);
+    }
+    MPI_Barrier(MPI_COMM_WORLD);
 
-    MPI_Finalize();
+    xPredicted = optimizeFletcherReevesMPI(hessian, b, minusGradMPI);
 
     if (rank == 0) {
-        double mae = meanAbsoluteErrorVector(resMPI, resSeq);
-        printf("MAE: %f\n", mae);
+        printVectorPrecise(xPredicted);
+        freeMatrix(hessian);
+        freeVector(b);
+        freeVector(xPredicted);
     }
 
+    MPI_Finalize();
+}
+
+int main(int argc, char* argv[])
+{
+    stdInMPIMain(argc, argv);
     return 0;
 }
