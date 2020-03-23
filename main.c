@@ -82,8 +82,60 @@ void stdInMPIMain(int argc, char* argv[]) {
     MPI_Finalize();
 }
 
+void testMPIMain(int argc, char* argv[]) {
+    int rank, procNum;
+    int size = 900;
+    struct SquareMatrix hessian;
+    struct Vector b, xPredicted;
+
+    MPI_Init(&argc, &argv);
+    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+
+    if (rank == 0) {
+        hessian = randomSymmetricMatrix(size);
+        b  = randomVector(size);
+    }
+    MPI_Barrier(MPI_COMM_WORLD);
+
+    xPredicted = optimizeFletcherReevesMPI(hessian, b, minusGradMPI);
+
+    if (rank == 0) {
+        freeMatrix(hessian);
+        freeVector(b);
+        freeVector(xPredicted);
+    }
+
+    MPI_Finalize();
+}
+
+void testMatMulMPI(int argc, char* argv[]) {
+    int rank, procNum;
+    int size = 900;
+    struct SquareMatrix A;
+    struct Vector b, res;
+
+    MPI_Init(&argc, &argv);
+    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+
+    if (rank == 0) {
+        A = randomSymmetricMatrix(size);
+        b = randomVector(size);
+    }
+    MPI_Barrier(MPI_COMM_WORLD);
+
+    dotProductMPIBuffered(A, b, res.vector);
+
+    if (rank == 0) {
+        freeMatrix(A);
+        freeVector(b);
+        freeVector(res);
+    }
+
+    MPI_Finalize();
+}
+
 int main(int argc, char* argv[])
 {
-    stdInMPIMain(argc, argv);
+    testMatMulMPI(argc, argv);
     return 0;
 }
