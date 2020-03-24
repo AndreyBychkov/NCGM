@@ -14,7 +14,7 @@
 static struct Vector minusGrad(struct Vector x, struct SquareMatrix hessian, struct Vector rightEqVector) {
     struct Vector hessX = dotProduct(hessian, x);
     struct Vector diffVector = subtractVector(hessX, rightEqVector);
-    struct Vector result =  minus(diffVector);
+    struct Vector result = minus(diffVector);
 
     freeVector(hessX);
     freeVector(diffVector);
@@ -24,7 +24,7 @@ static struct Vector minusGrad(struct Vector x, struct SquareMatrix hessian, str
 static struct Vector minusGradOMP(struct Vector x, struct SquareMatrix hessian, struct Vector rightEqVector) {
     struct Vector hessX = dotProductOMP(hessian, x);
     struct Vector diffVector = subtractVector(hessX, rightEqVector);
-    struct Vector result =  minus(diffVector);
+    struct Vector result = minus(diffVector);
 
     freeVector(hessX);
     freeVector(diffVector);
@@ -34,7 +34,7 @@ static struct Vector minusGradOMP(struct Vector x, struct SquareMatrix hessian, 
 static struct Vector minusGradMPI(struct Vector x, struct SquareMatrix hessian, struct Vector rightEqVector) {
     struct Vector hessX = dotProductMPI(hessian, x);
     struct Vector diffVector = subtractVector(hessX, rightEqVector);
-    struct Vector result =  minus(diffVector);
+    struct Vector result = minus(diffVector);
 
     freeVector(hessX);
     freeVector(diffVector);
@@ -45,8 +45,8 @@ void stdInMain() {
     size_t size = 0;
     scanf("%d", &size);
     struct SquareMatrix hessian = readMatrixFromStdInSized(size);
-    struct Vector b  = readVectorFromStdInSized(size);
-    struct Vector xPredicted  = optimizeFletcherReevesOMP(hessian, b, minusGradOMP);
+    struct Vector b = readVectorFromStdInSized(size);
+    struct Vector xPredicted = optimizeFletcherReevesOMP(hessian, b, minusGradOMP);
     printVectorPrecise(xPredicted);
 
     freeMatrix(hessian);
@@ -54,7 +54,7 @@ void stdInMain() {
     freeVector(xPredicted);
 }
 
-void stdInMPIMain(int argc, char* argv[]) {
+void stdInMPIMain(int argc, char *argv[]) {
     int rank, procNum;
     int size;
     struct SquareMatrix hessian;
@@ -66,7 +66,7 @@ void stdInMPIMain(int argc, char* argv[]) {
     if (rank == 0) {
         scanf("%d", &size);
         hessian = readMatrixFromStdInSized(size);
-        b  = readVectorFromStdInSized(size);
+        b = readVectorFromStdInSized(size);
     }
     MPI_Barrier(MPI_COMM_WORLD);
 
@@ -82,20 +82,15 @@ void stdInMPIMain(int argc, char* argv[]) {
     MPI_Finalize();
 }
 
-void testMPIMain(int argc, char* argv[]) {
+void testMPIMain(int argc, char *argv[]) {
     int rank, procNum;
-    int size = 900;
-    struct SquareMatrix hessian;
-    struct Vector b, xPredicted;
+    int size = 175;
+    struct SquareMatrix hessian = randomSymmetricMatrix(size);
+    struct Vector b = randomVector(size);
+    struct Vector xPredicted;
 
     MPI_Init(&argc, &argv);
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-
-    if (rank == 0) {
-        hessian = randomSymmetricMatrix(size);
-        b  = randomVector(size);
-    }
-    MPI_Barrier(MPI_COMM_WORLD);
 
     xPredicted = optimizeFletcherReevesMPI(hessian, b, minusGradMPI);
 
@@ -108,34 +103,31 @@ void testMPIMain(int argc, char* argv[]) {
     MPI_Finalize();
 }
 
-void testMatMulMPI(int argc, char* argv[]) {
+void testMatMulMPI(int argc, char *argv[]) {
     int rank, procNum;
-    int size = 900;
-    struct SquareMatrix A;
-    struct Vector b, res;
+    int size = 9000;
+    struct SquareMatrix A = randomMatrix(size);
+    struct Vector b = randomVector(size);
+    struct Vector resMPI = initVector(size);
+    struct Vector resSequential;
 
     MPI_Init(&argc, &argv);
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
     if (rank == 0) {
-        A = randomSymmetricMatrix(size);
-        b = randomVector(size);
+        resSequential = dotProduct(A, b);
     }
-    MPI_Barrier(MPI_COMM_WORLD);
 
-    dotProductMPIBuffered(A, b, res.vector);
+    dotProductMPIBuffered(A, b, resMPI.vector);
 
     if (rank == 0) {
-        freeMatrix(A);
-        freeVector(b);
-        freeVector(res);
+        double mae = meanAbsoluteErrorVector(resSequential, resMPI);
+        printf("Mean Absolute Error with sequential result: %lf", mae);
     }
-
     MPI_Finalize();
 }
 
-int main(int argc, char* argv[])
-{
+int main(int argc, char *argv[]) {
     testMatMulMPI(argc, argv);
     return 0;
 }
